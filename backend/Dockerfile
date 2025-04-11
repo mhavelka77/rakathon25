@@ -1,18 +1,38 @@
-FROM python:3.10-slim
+FROM python:3.10-alpine AS builder
+
+# Install build dependencies
+RUN apk add --no-cache --virtual .build-deps \
+    gcc \
+    g++ \
+    musl-dev \
+    python3-dev \
+    linux-headers \
+    cmake \
+    make
 
 WORKDIR /app
 
-# Install system dependencies for document processing
-RUN apt-get update && apt-get install -y \
+# Copy and install requirements in a separate layer
+COPY requirements.txt .
+RUN pip install --no-cache-dir --user -r requirements.txt
+
+# Create final image
+FROM python:3.10-alpine
+
+# Install only runtime dependencies
+RUN apk add --no-cache \
     poppler-utils \
     tesseract-ocr \
     libreoffice \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+    libstdc++
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+WORKDIR /app
 
+# Copy installed packages from builder
+COPY --from=builder /root/.local /root/.local
+ENV PATH=/root/.local/bin:$PATH
+
+# Copy application code
 COPY . .
 
 EXPOSE 8000

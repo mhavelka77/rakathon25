@@ -1,11 +1,32 @@
-__pycache__
-*.pyc
-*.pyo
-*.pyd
+# Version control
+.git
+.gitignore
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
 .Python
-venv
-env
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment and local development
 .env
 .venv
-.git
-.gitignore 
+env/
+venv/
+ENV/
+.idea/
+.vscode/
+
+# Docker related
+Dockerfile
+.dockerignore
+
+# Temporary files and data
+*.log
+data/
+temp/
+.DS_Store 

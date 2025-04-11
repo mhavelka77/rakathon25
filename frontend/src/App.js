@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
+import { ThreeDots, Oval, Grid, TailSpin, Circles } from 'react-loader-spinner';
 
 // API URL from environment variable or default
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
@@ -110,7 +111,18 @@ function App() {
 
       {loading && (
         <div className="loading">
-          <p>Processing your documents...</p>
+          <div className="spinner-container">
+            <Circles
+              visible={true}
+              height="80"
+              width="80"
+              color="#0087F7"
+              ariaLabel="processing-documents"
+              wrapperStyle={{}}
+              wrapperClass=""
+            />
+            <p>Processing your documents. This may take a moment...</p>
+          </div>
         </div>
       )}
 

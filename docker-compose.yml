@@ -7,6 +7,7 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app
+      - /app/__pycache__
     env_file:
       - ./backend/.env
     restart: unless-stopped
@@ -14,12 +15,9 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
+      - "3000:80"
     depends_on:
       - backend
     restart: unless-stopped
-    environment:
-      - REACT_APP_API_URL=http://localhost:8000 
+    # Environment variables are now handled in the build process
+    # No need for volumes since we're using a production-ready build 

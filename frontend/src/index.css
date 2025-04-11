@@ -90,6 +90,36 @@ textarea {
   margin: 20px 0;
 }
 
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  animation: pulse 2s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 2px 8px rgba(0, 135, 247, 0.1);
+  }
+  50% {
+    box-shadow: 0 2px 12px rgba(0, 135, 247, 0.3);
+  }
+  100% {
+    box-shadow: 0 2px 8px rgba(0, 135, 247, 0.1);
+  }
+}
+
+.spinner-container p {
+  margin-top: 15px;
+  color: #0087F7;
+  font-weight: 500;
+}
+
 .response-container {
   margin-top: 30px;
   padding: 20px;

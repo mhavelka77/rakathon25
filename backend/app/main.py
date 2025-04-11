@@ -23,26 +23,29 @@ async def root():
 
 @app.post("/api/process")
 async def process_data(
-    files: List[UploadFile] = File(...),
+    files: Optional[List[UploadFile]] = File(None),
     text_input: Optional[str] = Form(None)
 ):
     """
     Process multiple documents and optional text input using an LLM.
     
-    - files: List of documents (PDF, DOCX, JPG, etc.)
+    - files: List of documents (PDF, DOCX, JPG, etc.) - optional
     - text_input: Optional text input
     """
     try:
-        # Check if files were uploaded
-        if not files:
-            raise HTTPException(status_code=400, detail="No files uploaded")
+        document_texts = []
         
-        # Process the documents and extract text
-        document_texts = await process_documents(files)
+        # Process the documents if any were uploaded
+        if files:
+            document_texts = await process_documents(files)
         
         # Add the text input if provided
         if text_input:
             document_texts.append(text_input)
+        
+        # Check if we have any input to process
+        if not document_texts:
+            raise HTTPException(status_code=400, detail="No input provided. Please upload at least one file or provide text input.")
         
         # Get LLM response
         llm_response = await get_llm_response(document_texts)
