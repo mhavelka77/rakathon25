@@ -46,7 +46,7 @@ def fetch_available_models():
         return ["gpt-4o-mini"]
 
 AVAILABLE_MODELS = fetch_available_models()
-DEFAULT_MODEL = AVAILABLE_MODELS[0] if AVAILABLE_MODELS else "gpt-4o-mini"
+DEFAULT_MODEL = "gpt-4o-mini"
 USE_LOCAL_LLM = False if OPENAI_API_KEY else True
 
 def check_token_limit(prompt: str, model: str) -> bool:
