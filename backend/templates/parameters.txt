@@ -1,0 +1,170 @@
+# Medical parameters for extraction
+# Format: Parameter;Type
+
+RELEVANTNÍ NÁDOROVÝ PREDISPOZIČNÍ SYNDROM-RELEVANTNÍ NÁDOROVÝ PREDISPOZIČNÍ SYNDROM;ANO/NE/NEZNÁMO
+RELEVANTNÍ NÁDOROVÝ PREDISPOZIČNÍ SYNDROM-Název predispozičního syndromu;"výběr {číselník} + možnost přidání vlastního; více možností"
+RELEVANTNÍ NÁDOROVÝ PREDISPOZIČNÍ SYNDROM-Jiný predispoziční syndrom;text
+RELEVANTNÍ NÁDOROVÝ PREDISPOZIČNÍ SYNDROM-Komentář;text
+ONKOLOGICKY SUSPEKTNÍ RODINNÁ ANAMNÉZA-Příbuzenský stav;výběr {První linie (děti, matka, otec, vlastní sourozenci), Druhá linie (dědeček, babička, strýc, teta), Třetí linie (sestřenice, bratranci)}
+ONKOLOGICKY SUSPEKTNÍ RODINNÁ ANAMNÉZA-Onkologické onemocnění – specifikace;text
+ONKOLOGICKY SUSPEKTNÍ RODINNÁ ANAMNÉZA-Onkologické onemocnění – kód MKN-10 ;výběr z aktuálního číselníku platné verze MKN-O-10, umožnit multivýběr
+RELEVATNÍ KOMORBIDITY-Závažné onemocnění srdce a cév;číselník (hypertenze, infarkt myokardu, arytmie, cévní mozková příhoda, TEN, jiné, žádné, neznámo), vícenásobný výskyt
+RELEVATNÍ KOMORBIDITY-Jiné srdeční onemocnění -specifikujte;text
+RELEVATNÍ KOMORBIDITY-Závažné metabolické onemocnění;číselník (diabetes mellitus, jiné, žádné, neznámo), vícenásobný výskyt
+RELEVATNÍ KOMORBIDITY-Jiné metabolické onemocnění - specifikujte;text
+RELEVATNÍ KOMORBIDITY-Závažné plicní onemocnění;číselník (astma, CHOPN, jiné, žádné, neznámo), vícenásobný výskyt
+RELEVATNÍ KOMORBIDITY-Jiné plicní onemocnění -specifikujte;text
+RELEVATNÍ KOMORBIDITY-Závažné onemocnění GIT;ANO/NE/NEZNÁMO
+RELEVATNÍ KOMORBIDITY-Onemocnění / funkční stav - komentář  ;text
+RELEVATNÍ KOMORBIDITY-Závažné onemocnění ledvin;číselník (chronické renální selhání, jiné, žádné, neznámo), vícenásobný výskyt
+RELEVATNÍ KOMORBIDITY-Jiné onemocnění ledvin -specifikujte;text
+RELEVATNÍ KOMORBIDITY-Onemocnění / funkční stav - komentář  ;text
+RELEVATNÍ KOMORBIDITY-Autoimunitní onemocnění ;ANO/NE/NEZNÁMO
+RELEVATNÍ KOMORBIDITY-Onemocnění / funkční stav - komentář  ;text
+RELEVATNÍ KOMORBIDITY-Závažné endokrinologické onemocnění;ANO/NE/NEZNÁMO
+RELEVATNÍ KOMORBIDITY-Onemocnění / funkční stav - komentář  ;text
+RELEVATNÍ KOMORBIDITY-Neuropsychiatrické onemocnění;ANO/NE/NEZNÁMO
+RELEVATNÍ KOMORBIDITY-Onemocnění / funkční stav - komentář  ;text
+RELEVATNÍ KOMORBIDITY-Gynekologické onemocnění;ANO/NE/NEZNÁMO
+RELEVATNÍ KOMORBIDITY-Onemocnění / funkční stav - komentář  ;text
+RELEVATNÍ KOMORBIDITY-HPV pozitivita;ANO/NE/údaj není k dispozici
+RELEVATNÍ KOMORBIDITY-Menopauza (Rok);datum (RRRR)
+RELEVATNÍ KOMORBIDITY-Hormonoterapie;ANO/NE/údaj není k dispozici
+RELEVATNÍ KOMORBIDITY-Antikoncepce;ANO/NE/údaj není k dispozici
+RELEVATNÍ KOMORBIDITY-Závažné infekční onemocnění;číselník (hepatitida B, hepatitida C, TBC, COVID-19, HIV, HPV, jiné, žádné, neznámo), vícenásobný výskyt
+RELEVATNÍ KOMORBIDITY-Onemocnění / funkční stav - komentář  ;text
+RELEVATNÍ KOMORBIDITY-Orgánová transplantace;ANO/NE/údaj není k dispozici
+RELEVATNÍ KOMORBIDITY-Orgán;výběr {plíce, ledvina, játra, srdce, jiný orgán} více možností
+RELEVATNÍ KOMORBIDITY-Jiný orgán;text
+RELEVATNÍ KOMORBIDITY-Rok transplantace;datum (RRRR)
+RELEVATNÍ KOMORBIDITY-Volitelný komentář;text
+RELEVATNÍ KOMORBIDITY-Jiné relevantní zdravotní nálezy/výkony/komorbidity;text
+RELEVATNÍ KOMORBIDITY-Předchozí onkologické onemocnění;ANO/NE/údaj není k dispozici
+RELEVATNÍ KOMORBIDITY-Onkologické nemocnění - DG;text
+RELEVATNÍ KOMORBIDITY-Rok diagnózy;datum (RRRR)
+RELEVATNÍ KOMORBIDITY-Léčen(a) ve zdravotnickém zařízení (název);text
+RELEVATNÍ KOMORBIDITY-Onemocnění/funkční stav - komentář;číselník MKN-O-3
+RELEVATNÍ KOMORBIDITY-Mamografický screening;ANO/NE/údaj není k dispozici
+RELEVATNÍ KOMORBIDITY-Rok posledního vyšetření;datum (RRRR)
+RELEVATNÍ KOMORBIDITY-Screening nádoru děložního hrdla ;ANO/NE/údaj není k dispozici
+RELEVATNÍ KOMORBIDITY-Rok posledního vyšetření;datum (RRRR)
+RELEVATNÍ KOMORBIDITY-Screening kolorektálního karcinomu ;ANO/NE/údaj není k dispozici
+RELEVATNÍ KOMORBIDITY-Rok posledního vyšetření;datum (RRRR)
+RELEVATNÍ KOMORBIDITY-Forma screeningu;číselník  [TOKS, Kolonoskopie] 
+RELEVATNÍ KOMORBIDITY-Plicní screening;ANO/NE/údaj není k dispozici
+RELEVATNÍ KOMORBIDITY-Rok posledního vyšetření;datum (RRRR)
+RELEVATNÍ KOMORBIDITY-Screening prostaty;ANO/NE/údaj není k dispozici
+RELEVATNÍ KOMORBIDITY-Rok posledního vyšetření;datum (RRRR)
+RELEVATNÍ KOMORBIDITY-Léková alergie          ;ANO/NE/údaj není k dispozici
+RELEVATNÍ KOMORBIDITY-Specifikace;text
+RELEVATNÍ KOMORBIDITY-Alergie na jód/kontrastní látky  ;ANO/NE/údaj není k dispozici
+RELEVATNÍ KOMORBIDITY-Specifikace;text
+RELEVATNÍ KOMORBIDITY-Jiné alergie (např. potravinové, pyly, prach);ANO/NE/údaj není k dispozici
+RELEVATNÍ KOMORBIDITY-Specifikace;text
+RELEVATNÍ KOMORBIDITY-Kouření;výběr {Aktivní kuřák, Bývalý kuřák, Pasivní kuřák, Nekuřák, údaj není k dispozici}
+RELEVATNÍ KOMORBIDITY-Počet denně vykouřených balíčků/krabiček cigaret;číslo
+RELEVATNÍ KOMORBIDITY-Počet let kouření;číslo
+RELEVATNÍ KOMORBIDITY-Počet balíčkoroků;číslo
+RELEVATNÍ KOMORBIDITY-Kouření - komentář;text
+RELEVATNÍ KOMORBIDITY-Alkohol;výběr {Abstinent, Příležitostní konzumace, Denní konzumace, údaj není k dispozici}
+RELEVATNÍ KOMORBIDITY-Alkohol - komentář;text
+RELEVATNÍ KOMORBIDITY-Drogová závislost;výběr {Aktuálně drogově závislý(á), Nikdy drogově závislý(á), Drogově závislý(á) v minulosti, Údaj není k dispozici}
+RELEVATNÍ KOMORBIDITY-Drogová závislost - komentář;text
+Antropometrické údaje-Datum měření;datum
+Antropometrické údaje-Výška;číslo [cm]
+Antropometrické údaje-Hmotnost;číslo [kg]
+Antropometrické údaje-BMI;číslo
+Antropometrické údaje-BSA;číslo
+Performance status (ECOG)-Performance status (ECOG);Výběr z číselníku (0 - Plně aktivní, je schopen normální tělesné aktivity bez omezení; 1 - Omezení fyzických náročných aktivit, ambulantní, schopen lehčí práce, např. domácí práce, kancelářská práce; 2 - Ambulantní, soběstačný, ale neschopen jakékoliv práce. Tráví více než 50% denní doby mimo lůžko; 3 - Omezeně soběstačný. Přes den tráví na lůžku více než 50% denní doby; 4 - Zcela nesoběstačný. Trvale upoután na lůžko nebo do křesla, 5 - Mrtvý)
+Performance status (ECOG)-Datum hodnocení ;datum
+Karnofského index (KI)-Karnofského index (KI);výběr {0-100}, posuvník, hodnoty % 
+Karnofského index (KI)-Datum hodnocení ;datum
+Karnofského index (KI)-Opatření k zachování plodnosti před onkologickou léčbou   ;ANO/NE/údaj není k dispozici
+Opatření k zachování plodnosti před onkologickou léčbou   -Typ opatření;výběr {kryokonzervace spermatu, kryokonzervace ovariální tkáně, podání GNRH analoga, jiné opatření} 
+Opatření k zachování plodnosti před onkologickou léčbou   -Datum provedení/zahájení opatření;datum
+Opatření k zachování plodnosti před onkologickou léčbou   -Místo uložení vzorku:;text / číselník ZZ
+Opatření k zachování plodnosti před onkologickou léčbou   -Volitelný komentář;text
+Klasifikace nádoru-Pořadové číslo onkologické diagnózy pacienta;číslo
+Klasifikace nádoru-Datum stanovení definitivní diagnózy;datum
+Klasifikace nádoru-Diagnostická modalita;výběr {klinické vyšetření, laboratorní vyšetření, zobrazovací vyšetření, cytologie, histologie, molekulárně-biologické vyšetření, pitva}; více možností
+Klasifikace nádoru-Diagnóza slovně;text
+Klasifikace nádoru-Kód MKN-10;výběr {číselník: kódy + textové názvy}
+Klasifikace nádoru-Lateralita;výběr {vpravo, vlevo, oboustranně, odpadá, neznámo}
+Klasifikace nádoru-Morfologie nádoru slovně;text
+Klasifikace nádoru-Typ morfologie;histologie / biopsie / cytologie / pitva / jiný
+Klasifikace nádoru-Topografie;kód MKN-O (CXX.X)
+Klasifikace nádoru-Morfologie kombinovaně;kód MKN-O morfologie/biologické chování, výběr z číselníku
+Klasifikace nádoru-Morfologie;kód MKN-O morfologie
+Klasifikace nádoru-Biologické chování nádoru;kód MKN-O biologické chování
+Klasifikace nádoru-Grading (diferenciace nádoru) G;kód MKN-O pro grading
+Klasifikace nádoru-Verze MKN-O;text
+Klasifikace nádoru-Slovní popis diagnózy, komentář;text
+Klasifikace nádoru-ORPHA kód;dle číselníku Orphanet
+TNM klinická klasifikace-cT;výběr {dle číselníku pro danou topografii, rámcově X, 0, is, 1, 2, 3, 4}
+TNM klinická klasifikace-četnost;výběr {1,2,3,m}
+TNM klinická klasifikace-cN;výběr {dle číselníku pro danou topografii, rámcově X, 0, 1, 2, 3}
+TNM klinická klasifikace-cM;výběr {dle číselníku pro danou topografii, rámcově X, 0, 1}
+TNM patologická klasifikace -y;kód podle TNM [0 / 1]
+TNM patologická klasifikace -r;kód podle TNM [0 / 1]
+TNM patologická klasifikace -a;kód podle TNM [0 / 1]
+TNM patologická klasifikace -pT;výběr {X, 0, is, 1, 2, 3, 4}
+TNM patologická klasifikace -četnost;výběr {1,2,3,m}
+TNM patologická klasifikace -pN;výběr {X, 0, 1, 2, 3}
+TNM patologická klasifikace -p(sn);výběr z číselníku dle povolených možností dle DG
+TNM patologická klasifikace -počet pozitivních sentinel.uzlin;integer
+TNM patologická klasifikace -počet celkově vyšetřených sentinel.uzlin;integer
+TNM patologická klasifikace -počet pozitivních ostatních uzlin;integer
+TNM patologická klasifikace -počet celkově vyšetřených ostatních uzlin;integer
+TNM patologická klasifikace -pM;výběr {X, 0, 1}
+TNM patologická klasifikace -Stádium;výběr {I, II, III, IV} Přidat rovněž do číselníku možnosti 6-stádium neuvedeno, neznámé primum; 7 - stádium se neuvádí; 9 - stádium neznámo.
+TNM patologická klasifikace -Lokalizace metastáz;číselník (mozek, plíce, játra, viscerální mimo výše uvedené, kost, měkké tkáně, jiné, žádné), vícenásobný výskyt
+TNM patologická klasifikace -Lokalizace metastáz - komentář;text
+TNM patologická klasifikace -Lymfatická invaze (L);výběr { LX lymfatickou invazi nelze hodnotit, L0 bez lymfatické invaze, L1 lymfatická invaze  }
+TNM patologická klasifikace -Žilní invaze (V);výběr {VX žilní invazi nelze hodnotit, V0 bez žilní invaze, V1 mikroskopická žilní invaze, V2 makroskopická žilní invaze       }
+TNM patologická klasifikace -Pn - Perineurální invaze;0/1/X
+TNM patologická klasifikace -R - Klasifikace;výběr {RX přítomnost reziduálního nádoru nelze hodnotit, R0 bez reziduálního nádoru, R1 mikroskopický reziduální nádor,R2 makroskopický reziduální nádor}
+TNM patologická klasifikace -Staging - doplňující informace;text
+Výběr diagnostické skupiny-Výběr diagnostické skupiny;číselník (Nádory CNS a různé intrakraniální a intraspinální nádory, nádory oka)
+Stav nemoci Přešetření-Trvá léčebná odpověď;ano/ne
+Stav nemoci Přešetření-Datum relapsu/progrese;datum
+Stav nemoci Přešetření-Typ relapsu;výběr {lokální recidiva / diseminace }
+Stav nemoci Přešetření-Volitelný komentář;text
+Skupina novotvarů-Název skupiny novotvarů;text
+Skupina novotvarů Laboratorní marker-název laboratorního markeru;text včetně uvedení jednotek, je-li relevantní
+Skupina novotvarů Laboratorní marker-formát laboratorního markeru;hodnota / číselník / ano-ne-neznámo
+Skupina novotvarů Laboratorní marker-hodnota laboratorního markeru;hodnota podle pole M.B.1.x.2.2
+Skupina novotvarů Molekulárně-genetický marker-název molekulárně-genetického markeru;text včetně uvedení jednotek, je-li relevantní
+Skupina novotvarů Molekulárně-genetický marker-formát molekulárně-genetického markeru;hodnota / číselník / ano-ne-neznámo
+Skupina novotvarů Molekulárně-genetický marker-hodnota molekulárně-genetického markeru;hodnota podle pole M.B.1.x.3.2
+Skupina novotvarů Specifická klasifikace-název specifické klasifikace;text včetně uvedení jednotek, je-li relevantní
+Skupina novotvarů Specifická klasifikace-formát specifické klasifikace;hodnota / číselník / ano-ne-neznámo
+Skupina novotvarů Specifická klasifikace-hodnota specifické klasifikace;hodnota podle pole M.B.1.x.4.2
+Skupina novotvarů Rizikový faktor-název rizikového faktoru;text včetně uvedení jednotek, je-li relevantní
+Skupina novotvarů Rizikový faktor-formát rizikového faktoru;hodnota / číselník / ano-ne-neznámo
+Skupina novotvarů Rizikový faktor-hodnota rizikového faktoru;hodnota podle pole M.B.1.x.5.2
+Léčba-Datum zahájení   ;datum
+Chirurgická léčba-Datum operace;datum
+Chirurgická léčba-Indikace operačního výkonu;výběr {onkologická, ne-onkologická}, výběr jen jedné možnosti, sada přepínačů, skiplogic
+Chirurgická léčba-Strategie onkologické operace;výběr {kurativní, paliativní, preventivní, výlučně diagnostická, rekonstrukční}, výběr jen jedné možnosti, číselník
+Chirurgická léčba-Pořadí onkol.operace;výběr {primární, následná}, výběr jen jedné možnosti, sada přepínačů
+Chirurgická léčba-Operační přístup;výběr {otevřený, endoskopický, laparoskopický, robotický, kombinovaný}, více možností - checkboxy
+Chirurgická léčba-Konverze;ANO/NE/Údaj není k dispozici
+Chirurgická léčba-Typ výkonu - primární nádor;výběr {parciální resekce orgánu, radikální resekce orgánu, debulking (cytoredukce), biopsie, žádná} - výběr jen jedné možnosti
+Chirurgická léčba-Radikální resekce - nádory CNS;výběr {GTR (radikální totální resekce), NTR (téměř totální resekce), STR (subtotální resekce)}
+Chirurgická léčba-Makroskopické rezidum nádoru (R2):;výběr {Ano, Ne, Nehodnoceno}, sada přepínačů
+Chirurgická léčba-Typ výkonu - regionální uzliny (výsledný stav);výběr {sentinelová biopsie, targeted dissection, lymfadenektomie, sampling, žádný) více možností - checkboxy
+Chirurgická léčba-Metastazektomie - vzdálené metastázy:;ANO/NE/NEZNÁMO, sada přepínačů
+Chirurgická léčba-Metastazektomie - Lokalizace vzdálených metastáz;výběr {plíce, kostní dřeň, kost, pleura, játra, peritoneum, mozek, nadledviny, uzliny, kůže, jiný orgán}
+Chirurgická léčba-Jiný orgán;text
+Chirurgická léčba-Speciální metoda;ANO/NE/NEZNÁMO,  sada přepínačů
+Chirurgická léčba-Speciální metoda - specifikace;výběr {HIPEC, PIPAC, ILP, RFA, kryoablace, MWA, Jiná} - výběr jen jedné možnosti, číselník
+Chirurgická léčba-Speciální metoda - jiné;text
+Chirurgická léčba-Volitelný komentář;text
+CHEMOTERAPIE-Datum zahájení   ;datum
+CHEMOTERAPIE-Datum ukončení ;datum
+CHEMOTERAPIE-Plánovaná strategie;výběr {kurativní, paliativní}
+CHEMOTERAPIE-Upřesnění strategie    ;výběr {neoadjuvance, adjuvance, upfront}
+CHEMOTERAPIE-Režim:;text
+CHEMOTERAPIE-Podané léčivo;číselník ATC, více možností
+CHEMOTERAPIE-Byla překročena kumulativní dávka?;ANO/NE/Údaj není k dispozici
+CHEMOTERAPIE-Volitelný komentář;text 

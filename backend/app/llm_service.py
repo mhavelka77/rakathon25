@@ -4,7 +4,8 @@ import requests
 from dotenv import load_dotenv
 import aiohttp
 import json
-import csv
+
+from app.prompt import create_prompt
 
 # Load environment variables
 load_dotenv()
@@ -16,32 +17,6 @@ LOCAL_LLM_URL = os.getenv("LOCAL_LLM_URL")
 # Set default model
 DEFAULT_MODEL = "gpt-4o"
 USE_LOCAL_LLM = False if OPENAI_API_KEY else True
-
-def load_parameters_from_csv():
-    """
-    Load parameters from parameters.csv file.
-    
-    Returns:
-        List of parameter definitions
-    """
-    parameters = []
-    try:
-        # Path is relative to where the application runs from
-        csv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'parameters.csv')
-        with open(csv_path, 'r', encoding='utf-8') as csvfile:
-            csv_reader = csv.reader(csvfile, delimiter=';')
-            for row in csv_reader:
-                if len(row) >= 1:
-                    parameter_definition = row[0]
-                    parameter_type = row[1] if len(row) > 1 else ""
-                    parameters.append({
-                        "definition": parameter_definition,
-                        "type": parameter_type
-                    })
-        return parameters
-    except Exception as e:
-        print(f"Error loading parameters from CSV: {str(e)}")
-        return []
 
 async def get_llm_response(texts: List[str]) -> str:
     """
@@ -55,34 +30,8 @@ async def get_llm_response(texts: List[str]) -> str:
     Returns:
         LLM response containing extracted parameters
     """
-    # Combine all texts into a single context
-    combined_text = "\n\n".join(texts)
-    
-    # Load parameters from CSV
-    parameters = load_parameters_from_csv()
-    
-    # Format parameters for prompt
-    parameters_text = "\n".join([f"{i+1}. {param['definition']} ({param['type']})" 
-                               for i, param in enumerate(parameters)])
-    
-    # Create prompt
-    prompt = f"""You are a medical data extraction assistant. Your task is to extract medical parameters from the provided text.
-
-PARAMETERS TO EXTRACT:
-{parameters_text}
-
-MEDICAL TEXT:
-{combined_text}
-
-INSTRUCTIONS:
-1. Carefully analyze the medical text and extract ONLY the parameters listed above.
-2. Only extract parameters when you are confident they exist in the text.
-3. Not all parameters will be present in the text, only extract what you find.
-4. For each parameter found, provide the name and the extracted value.
-5. Format your response as a clean list of parameter names and values.
-6. Do not include any explanations, only the extracted parameters.
-7. If you cannot find a parameter, do not include it in your response.
-"""
+    # Use the consolidated prompt from the prompt module
+    prompt = create_prompt(texts)
     
     # Use the appropriate LLM
     if USE_LOCAL_LLM:
