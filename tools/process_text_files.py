@@ -35,7 +35,7 @@ def process_file(file_path, api_url="http://localhost:8000/api/process"):
         print(f"Exception processing file {file_path}: {str(e)}")
         return None
 
-def extract_values_from_response(response):
+def extract_values_from_response(response:str) -> dict[str,str]:
     """
     Extract the second column (values) from the CSV-formatted response
     """
@@ -54,12 +54,30 @@ def extract_values_from_response(response):
     
     return values
 
-def save_dataframe(df, output_path='./processed_data.pkl'):
+def save_row(row:str, output_path='./processed_data.pkl'):
     """
-    Save the DataFrame to a pickle file
+    Appends row to the output file.
     """
-    df.to_pickle(output_path)
-    print(f"DataFrame saved to {output_path}")
+    with open(output_path, 'at') as output:
+        print(row,file=output)
+    return
+
+def get_already_processed_files(csv_path):
+    """
+    Read the first column (file_path) from the output CSV to skip reprocessing
+    """
+    if not os.path.exists(csv_path):
+        return set()
+
+    processed = set()
+    with open(csv_path, 'r', encoding='utf-8') as f:
+        for line in f:
+            if line.strip():
+                parts = line.strip().split(',')
+                if parts:
+                    if parts[-1] != 'file_path':
+                        processed.add(parts[-1])
+    return processed
 
 def main():
     parser = argparse.ArgumentParser(description='Process text files using the backend API')
@@ -68,21 +86,19 @@ def main():
     parser.add_argument('--api_url', default='http://localhost:8000/api/process', help='API endpoint URL')
     args = parser.parse_args()
     
-    # Get all text files from the specified directory
+    header = 'Předchozí onkologické onemocnění,Výška,Hmotnost,BMI,Pohlaví,Léková alergie,Specifikace,Alergie na jód/kontrastní látky,Specifikace,Performance status (ECOG),Datum stanovení definitivní diagnózy,Diagnóza - kód MKN,Lateralita,Grading (diferenciace nádoru) G,ORPHA kód,cT,četnost,cN,cM,y,r,a,pT,pN,pM,Stádium,Lokalizace metastáz,Výběr diagnostické skupiny,Datum zahájení léčby,Datum operace,Datum zahájení,Datum ukončení,Datum zahájení  série,Datum ukončení série,Zevní radioterapie,Typ zevní RT,Brachyterapie,Datum hodnocení léčebné odpovědi,Hodnocená léčebná odpověď,Progrese'
+    categories = header.split(',')
+
+
     text_files = glob.glob(os.path.join(args.input_dir, '*.txt'))
-    print(f"Found {len(text_files)} text files to process")
-    
-    # Initialize or load existing DataFrame
-    if os.path.exists(args.output):
-        print(f"Loading existing DataFrame from {args.output}")
-        df = pd.read_pickle(args.output)
-        # Get already processed files
-        processed_files = set(df['file_path'].tolist()) if 'file_path' in df.columns else set()
-        text_files = [f for f in text_files if f not in processed_files]
-        print(f"Skipping {len(processed_files)} already processed files")
-    else:
-        df = pd.DataFrame()
-    
+    print(f"Found {len(text_files)} text files")
+
+    processed_files = get_already_processed_files(args.output)
+    text_files = [f for f in text_files if f not in processed_files]
+    print(f"Skipping {len(processed_files)} already processed files")
+    if len(processed_files) == 0:
+        save_row(header + ',file_path',args.output)
+
     # Process each file
     for file_path in tqdm(text_files):
         try:
@@ -90,26 +106,22 @@ def main():
             response = process_file(file_path, api_url=args.api_url)
             
             # Extract values from the response
-            values = extract_values_from_response(response)
+            response_parameters_dict = extract_values_from_response(response)
             
-            # Create a new row for the DataFrame
-            row = values.copy()
-            row['file_path'] = file_path
-            
-            # Append to DataFrame
-            df = pd.concat([df, pd.DataFrame([row])], ignore_index=True)
-            
-            # Save after each file for recoverability
-            save_dataframe(df, output_path=args.output)
-            
-            # Add a small delay to avoid overwhelming the API
-            time.sleep(0.5)
+            if response_parameters_dict:
+                values = []
+                for parameter in categories:
+                    value = ''
+                    if parameter in response_parameters_dict.keys():
+                        value = response_parameters_dict[parameter]
+                    values.append(value)
+                row = ','.join(values) + ',' + file_path
+                save_row(row, args.output)
             
         except Exception as e:
             print(f"Error processing {file_path}: {str(e)}")
     
     print(f"Processing complete. Processed {len(text_files)} files.")
-    print(f"Final DataFrame shape: {df.shape}")
 
 if __name__ == "__main__":
     main() 

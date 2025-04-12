@@ -11,7 +11,6 @@ Team Modprobe p53
 - anonymizace!
 - natocit video
 - deploy .exe?
-- vycistit kod
 
 
 # cancelled?
@@ -21,6 +20,7 @@ Team Modprobe p53
 - Second round of LLM sanity check?
 
 # done
+- vycistit kod
 - personalizace
 - Lepsi UI?
 - reference na puvodni text!
