@@ -1,7 +1,7 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
-import { ThreeDots, Oval, Grid, TailSpin, Circles } from 'react-loader-spinner';
+import { Circles } from 'react-loader-spinner';
 
 // API URL from environment variable or default
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
@@ -10,7 +10,25 @@ function App() {
   const [files, setFiles] = useState([]);
   const [textInput, setTextInput] = useState('');
   const [response, setResponse] = useState('');
+  const [parsedData, setParsedData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [availableModels, setAvailableModels] = useState([]);
+  const [selectedModel, setSelectedModel] = useState('');
+
+  // Fetch available models on component mount
+  useEffect(() => {
+    const fetchModels = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/api/models`);
+        setAvailableModels(response.data.models);
+        setSelectedModel(response.data.default_model);
+      } catch (error) {
+        console.error('Error fetching models:', error);
+      }
+    };
+
+    fetchModels();
+  }, []);
 
   const onDrop = useCallback(acceptedFiles => {
     setFiles(prevFiles => [...prevFiles, ...acceptedFiles]);
@@ -41,6 +59,7 @@ function App() {
 
     setLoading(true);
     setResponse('');
+    setParsedData([]);
 
     const formData = new FormData();
     
@@ -54,6 +73,9 @@ function App() {
       formData.append('text_input', textInput);
     }
 
+    // Add selected model
+    formData.append('model', selectedModel);
+
     try {
       const result = await axios.post(`${API_URL}/api/process`, formData, {
         headers: {
@@ -62,6 +84,15 @@ function App() {
       });
 
       setResponse(result.data.response);
+      
+      // Parse the CSV-like response into an array of parameter value pairs
+      const lines = result.data.response.trim().split('\n');
+      const parsedLines = lines.map(line => {
+        const [parameter, value] = line.split(',');
+        return { parameter: parameter.trim(), value: value ? value.trim() : '' };
+      });
+      
+      setParsedData(parsedLines);
     } catch (error) {
       console.error("Error processing documents:", error);
       setResponse(`Error: ${error.response?.data?.detail || 'Something went wrong. Please try again.'}`);
@@ -70,9 +101,39 @@ function App() {
     }
   };
 
+  // Handle edits to the parameter values in the table
+  const handleValueChange = (index, newValue) => {
+    const updatedData = [...parsedData];
+    updatedData[index].value = newValue;
+    setParsedData(updatedData);
+  };
+
+  // Export data as CSV
+  const exportToCSV = () => {
+    // Create CSV content
+    const csvContent = 
+      "Parameter,Value\n" + 
+      parsedData.map(row => `"${row.parameter}","${row.value}"`).join('\n');
+    
+    // Create a blob and download link
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    
+    // Create a temporary link and trigger the download
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', 'extracted_parameters.csv');
+    document.body.appendChild(link);
+    link.click();
+    
+    // Clean up
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <div className="container">
-      <h1>Document Processor</h1>
+      <h1>Medical Parameter Extractor</h1>
       
       <div {...getRootProps({ className: 'dropzone' })}>
         <input {...getInputProps()} />
@@ -101,6 +162,18 @@ function App() {
         />
       </div>
 
+      <div className="model-selection">
+        <h3>Select Model:</h3>
+        <select 
+          value={selectedModel}
+          onChange={(e) => setSelectedModel(e.target.value)}
+        >
+          {availableModels.map((model) => (
+            <option key={model} value={model}>{model}</option>
+          ))}
+        </select>
+      </div>
+
       <button
         className="button"
         onClick={handleSubmit}
@@ -126,7 +199,40 @@ function App() {
         </div>
       )}
 
-      {response && (
+      {parsedData.length > 0 && (
+        <div className="parameter-table-container">
+          <h3>Extracted Parameters:</h3>
+          <div className="table-controls">
+            <button onClick={exportToCSV} className="export-button">
+              Export to CSV
+            </button>
+          </div>
+          <table className="parameter-table">
+            <thead>
+              <tr>
+                <th>Parameter</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody>
+              {parsedData.map((row, index) => (
+                <tr key={index}>
+                  <td>{row.parameter}</td>
+                  <td>
+                    <input
+                      type="text"
+                      value={row.value}
+                      onChange={(e) => handleValueChange(index, e.target.value)}
+                    />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {response && !parsedData.length && (
         <div className="response-container">
           <h3>Response:</h3>
           <p style={{ whiteSpace: 'pre-wrap' }}>{response}</p>

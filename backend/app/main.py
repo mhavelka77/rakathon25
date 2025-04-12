@@ -4,7 +4,7 @@ from typing import List, Optional
 import os
 
 from app.document_processor import process_documents
-from app.llm_service import get_llm_response
+from app.llm_service import get_llm_response, AVAILABLE_MODELS, DEFAULT_MODEL
 
 app = FastAPI(title="Document Processing API")
 
@@ -21,16 +21,28 @@ app.add_middleware(
 async def root():
     return {"message": "Document Processing API is running"}
 
+@app.get("/api/models")
+async def get_models():
+    """
+    Get a list of available LLM models.
+    """
+    return {
+        "models": AVAILABLE_MODELS,
+        "default_model": DEFAULT_MODEL
+    }
+
 @app.post("/api/process")
 async def process_data(
     files: Optional[List[UploadFile]] = File(None),
-    text_input: Optional[str] = Form(None)
+    text_input: Optional[str] = Form(None),
+    model: Optional[str] = Form(DEFAULT_MODEL)
 ):
     """
     Process multiple documents and optional text input using an LLM.
     
     - files: List of documents (PDF, DOCX, JPG, etc.) - optional
     - text_input: Optional text input
+    - model: LLM model to use for processing
     """
     try:
         document_texts = []
@@ -47,8 +59,12 @@ async def process_data(
         if not document_texts:
             raise HTTPException(status_code=400, detail="No input provided. Please upload at least one file or provide text input.")
         
+        # Validate model
+        if model not in AVAILABLE_MODELS:
+            model = DEFAULT_MODEL
+        
         # Get LLM response
-        llm_response = await get_llm_response(document_texts)
+        llm_response = await get_llm_response(document_texts, model)
         
         return {
             "success": True,

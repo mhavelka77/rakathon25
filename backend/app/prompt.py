@@ -8,6 +8,7 @@ from typing import Dict, List, Any
 # Paths relative to this file
 PROMPT_TEMPLATE_PATH = os.path.join(os.path.dirname(__file__), '..', 'templates', 'prompt_template.txt')
 PARAMETERS_PATH = os.path.join(os.path.dirname(__file__), '..', 'templates', 'parameters.txt')
+ABBREVIATIONS_PATH = os.path.join(os.path.dirname(__file__), '..', 'templates', 'abbreviations.txt')
 
 def load_template() -> str:
     """
@@ -16,29 +17,8 @@ def load_template() -> str:
     Returns:
         The prompt template as a string
     """
-    try:
-        with open(PROMPT_TEMPLATE_PATH, 'r', encoding='utf-8') as file:
-            return file.read()
-    except Exception as e:
-        print(f"Error loading prompt template: {str(e)}")
-        # Fallback template if file can't be read
-        return """You are a medical data extraction assistant. Your task is to extract medical parameters from the provided text.
-
-PARAMETERS TO EXTRACT:
-{parameters_text}
-
-MEDICAL TEXT:
-{combined_text}
-
-INSTRUCTIONS:
-1. Carefully analyze the medical text and extract ONLY the parameters listed above.
-2. Only extract parameters when you are confident they exist in the text.
-3. Not all parameters will be present in the text, only extract what you find.
-4. For each parameter found, provide the name and the extracted value.
-5. Format your response as a clean list of parameter names and values.
-6. Do not include any explanations, only the extracted parameters.
-7. If you cannot find a parameter, do not include it in your response.
-"""
+    with open(PROMPT_TEMPLATE_PATH, 'r', encoding='utf-8') as file:
+        return file.read()
 
 def load_parameters() -> List[Dict[str, str]]:
     """
@@ -68,6 +48,34 @@ def load_parameters() -> List[Dict[str, str]]:
         print(f"Error loading parameters from file: {str(e)}")
         return []
 
+def load_abbreviations() -> List[Dict[str, str]]:
+    """
+    Load abbreviations from file.
+    
+    Returns:
+        List of abbreviation definitions
+    """
+    abbreviations = []
+    try:
+        with open(ABBREVIATIONS_PATH, 'r', encoding='utf-8') as file:
+            lines = file.readlines()
+            for line in lines:
+                line = line.strip()
+                if not line or line.startswith('#'):  # Skip empty lines and comments
+                    continue
+                parts = line.split(';')
+                if len(parts) >= 2:
+                    abbreviation = parts[0]
+                    meaning = parts[1]
+                    abbreviations.append({
+                        "abbreviation": abbreviation,
+                        "meaning": meaning
+                    })
+        return abbreviations
+    except Exception as e:
+        print(f"Error loading abbreviations from file: {str(e)}")
+        return []
+
 def create_prompt(texts: List[str]) -> str:
     """
     Create a prompt for the LLM with the medical texts and parameters to extract.
@@ -81,16 +89,22 @@ def create_prompt(texts: List[str]) -> str:
     # Combine all texts into a single context
     combined_text = "\n\n".join(texts)
     
-    # Load template and parameters
+    # Load template, parameters, and abbreviations
     template = load_template()
     parameters = load_parameters()
+    abbreviations = load_abbreviations()
     
     # Format parameters for prompt
     parameters_text = "\n".join([f"{i+1}. {param['definition']} ({param['type']})" 
                                for i, param in enumerate(parameters)])
     
+    # Format abbreviations for prompt
+    abbreviations_text = "\n".join([f"{abbr['abbreviation']} - {abbr['meaning']}" 
+                                 for abbr in abbreviations])
+    
     # Create the final prompt using the template
     return template.format(
         parameters_text=parameters_text,
-        combined_text=combined_text
+        combined_text=combined_text,
+        abbreviations_text=abbreviations_text
     ) 

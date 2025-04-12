@@ -14,11 +14,47 @@ load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 LOCAL_LLM_URL = os.getenv("LOCAL_LLM_URL")
 
-# Set default model
-DEFAULT_MODEL = "gpt-4o"
+# Get available models from OpenAI
+def fetch_available_models():
+    if not OPENAI_API_KEY:
+        # If no API key, return default models
+        return ["gpt-4o-mini"]
+    
+    try:
+        url = "https://api.openai.com/v1/models"
+        headers = {
+            "Authorization": f"Bearer {OPENAI_API_KEY}"
+        }
+        
+        response = requests.get(url, headers=headers)
+        
+        if response.status_code == 200:
+            all_models = response.json()["data"]
+            
+            # Filter to include only chat models we want to support
+            supported_prefixes = ["gpt-4", "gpt-3.5"]
+            models = [model["id"] for model in all_models 
+                     if any(model["id"].startswith(prefix) for prefix in supported_prefixes)]
+            
+            # Sort models and ensure we have at least one model
+            models.sort()
+            if not models:
+                models = ["gpt-4o-mini"]
+            
+            return models
+        else:
+            # Fallback to default model
+            return ["gpt-4o-mini"]
+    except Exception as e:
+        print(f"Error fetching models from OpenAI: {str(e)}")
+        return ["gpt-4o-mini"]
+
+# Initialize models
+AVAILABLE_MODELS = fetch_available_models()
+DEFAULT_MODEL = AVAILABLE_MODELS[0] if AVAILABLE_MODELS else "gpt-4o-mini"
 USE_LOCAL_LLM = False if OPENAI_API_KEY else True
 
-async def get_llm_response(texts: List[str]) -> str:
+async def get_llm_response(texts: List[str], model: str = DEFAULT_MODEL) -> str:
     """
     Get a response from an LLM based on the provided texts.
     Uses OpenAI by default, falls back to local LLM if configured.
@@ -26,6 +62,7 @@ async def get_llm_response(texts: List[str]) -> str:
     
     Args:
         texts: List of text extracted from documents
+        model: The LLM model to use
         
     Returns:
         LLM response containing extracted parameters
@@ -35,11 +72,11 @@ async def get_llm_response(texts: List[str]) -> str:
     
     # Use the appropriate LLM
     if USE_LOCAL_LLM:
-        return await get_local_llm_response(prompt)
+        return await get_local_llm_response(prompt, model)
     else:
-        return get_openai_response(prompt)
+        return get_openai_response(prompt, model)
 
-def get_openai_response(prompt: str) -> str:
+def get_openai_response(prompt: str, model: str = DEFAULT_MODEL) -> str:
     """Get a response from OpenAI API using direct HTTP request."""
     if not OPENAI_API_KEY:
         raise ValueError("OpenAI API key is not set in the environment variables")
@@ -51,7 +88,7 @@ def get_openai_response(prompt: str) -> str:
             "Authorization": f"Bearer {OPENAI_API_KEY}"
         }
         data = {
-            "model": DEFAULT_MODEL,
+            "model": model,
             "messages": [
                 {"role": "system", "content": "You are a medical parameter extraction assistant that analyzes medical documents and extracts specified parameters."},
                 {"role": "user", "content": prompt}
@@ -69,7 +106,7 @@ def get_openai_response(prompt: str) -> str:
     except Exception as e:
         return f"Error getting response from OpenAI: {str(e)}"
 
-async def get_local_llm_response(prompt: str) -> str:
+async def get_local_llm_response(prompt: str, model: str = DEFAULT_MODEL) -> str:
     """Get a response from a local LLM service."""
     if not LOCAL_LLM_URL:
         raise ValueError("Local LLM URL is not set in the environment variables")
@@ -77,7 +114,7 @@ async def get_local_llm_response(prompt: str) -> str:
     try:
         # Prepare the request payload
         payload = {
-            "model": "local-model",
+            "model": model,
             "messages": [
                 {"role": "system", "content": "You are a medical parameter extraction assistant that analyzes medical documents and extracts specified parameters."},
                 {"role": "user", "content": prompt}

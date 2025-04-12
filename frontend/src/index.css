@@ -16,6 +16,7 @@ body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   margin-top: 40px;
+  box-sizing: border-box;
 }
 
 h1 {
@@ -49,6 +50,9 @@ textarea {
   border-radius: 4px;
   min-height: 100px;
   font-family: inherit;
+  box-sizing: border-box;
+  max-width: 100%;
+  resize: vertical;
 }
 
 .button {
@@ -126,4 +130,99 @@ textarea {
   background-color: #f8f9fa;
   border-radius: 5px;
   border-left: 4px solid #0087F7;
+}
+
+.parameter-table-container {
+  margin-top: 20px;
+  width: 100%;
+  overflow-x: auto;
+  padding: 0 5px;
+}
+
+.table-controls {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.export-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.export-button:hover {
+  background-color: #45a049;
+}
+
+.parameter-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.parameter-table th, 
+.parameter-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.parameter-table td {
+  padding-right: 15px;
+}
+
+.parameter-table th {
+  background-color: #f2f2f2;
+  position: sticky;
+  top: 0;
+}
+
+.parameter-table tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.parameter-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.parameter-table input {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px;
+  margin-right: 10px;
+}
+
+.parameter-table input:focus {
+  outline: none;
+  border-color: #0087F7;
+  box-shadow: 0 0 5px rgba(0, 135, 247, 0.3);
+}
+
+.model-selection {
+  margin-bottom: 20px;
+}
+
+.model-selection select {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+.model-selection select:focus {
+  outline: none;
+  border-color: #0087F7;
+  box-shadow: 0 0 0 2px rgba(0, 135, 247, 0.2);
 } 
