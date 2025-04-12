@@ -41,7 +41,8 @@ function App() {
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document': ['.docx'],
       'image/jpeg': ['.jpg', '.jpeg'],
       'image/png': ['.png'],
-      'text/plain': ['.txt']
+      'text/plain': ['.txt'],
+      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx']
     }
   });
 
@@ -138,7 +139,7 @@ function App() {
       <div {...getRootProps({ className: 'dropzone' })}>
         <input {...getInputProps()} />
         <p>Drag & drop files here, or click to select files</p>
-        <p>Supports PDF, DOCX, JPG, PNG, and TXT files</p>
+        <p>Supports PDF, DOCX, JPG, PNG, TXT, and XLSX files</p>
       </div>
 
       {files.length > 0 && (
