@@ -90,3 +90,10 @@ def extract_text_from_xlsx(file_path: str) -> str:
         return "\n\n".join(text_content)
     except Exception as e:
         return f"Error extracting text from XLSX: {str(e)}"
+
+
+"""
+The only function in this repository that was written by a human.
+"""
+def bmi(weight:float, height:float) -> float:
+    return weight/(height**2)

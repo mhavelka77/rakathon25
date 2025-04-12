@@ -67,14 +67,20 @@ def load_all_data(analysis_type: str = "standard") -> Dict[str, str]:
 
 def create_prompt(texts: List[str], analysis_type: str = "standard") -> str:
     """Create the final prompt by combining the template with all data files"""
+    # Combine the document texts
     combined_text = "\n\n".join(texts)
+    
+    # Add line numbers to the combined text
+    lines = combined_text.split('\n')
+    numbered_lines = [f"{i+1}: {line}" for i, line in enumerate(lines)]
+    numbered_combined_text = '\n'.join(numbered_lines)
     
     # Load the template and all data files
     template = load_template()
     data = load_all_data(analysis_type)
     
-    # Add the combined text to the data
-    data['combined_text'] = combined_text
+    # Add the numbered combined text to the data
+    data['combined_text'] = numbered_combined_text
     
     # Format the template with all variables
     return template.format(**data)

@@ -65,12 +65,16 @@ async def process_data(
         if model not in AVAILABLE_MODELS:
             model = DEFAULT_MODEL
         
+        # Combine the document texts
+        combined_text = "\n\n".join(document_texts)
+        
         llm_response = await get_llm_response(document_texts, model, analysis_type)
         
         return {
             "success": True,
             "response": llm_response,
-            "analysis_type": analysis_type
+            "analysis_type": analysis_type,
+            "combined_text": combined_text
         }
     
     except Exception as e:

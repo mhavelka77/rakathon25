@@ -9,15 +9,18 @@ Team Modprobe p53
 
 - prezentace 
 - az bude vetsina hotova tak jupyter notebook s analyzou dat co mame
-- napsat dokumentaci
-- Lepsi UI?
 - Second round of LLM sanity check?
 - lokalni model!
-- reference na puvodni text! 
+- anonymizace!
+- reference na puvodni text!
 - natocit video
     - natocit doktora a no copyright music
+- personalizace
+- Lepsi UI?
 
 # cancelled?
+- napsat dokumentaci
+- deploy .exe?
 - Ukazat modelu priklad
 
 

@@ -9,19 +9,21 @@ ENUMS (CISELNIKY):
 PARAMETERS TO EXTRACT:
 {parameters}
 
-MEDICAL TEXT:
+MEDICAL TEXT (with line numbers already prepended):
 {combined_text}
 
 INSTRUCTIONS:
 1. Carefully analyze the medical text and extract ONLY the parameters listed above.
 2. For each parameter listed above, you must provide a value, even if empty.
-3. For each parameter found, provide the name as in the first column of the parameter and the extracted value in the format specified in the third column.
+3. For each parameter found, provide the name as in the first column of the parameter, the extracted value in the format specified in the third column, and the line number(s) from the source text where the information was found.
 4. If the parameters only have two columns, the second is the value format.
-4. Format your response in a structured format as follows:
-   PARAMETER_NAME,EXTRACTED_VALUE
-   Each parameter on a new line, with the parameter name and value separated by a comma.
-5. Do not include any explanations or additional text, ONLY the parameter-value pairs.
-6. If you cannot find a parameter in the text, output an empty value after the comma.
-7. Use your knowledge of the common abbreviations to help understand the medical text.
-8. In the parameters, there may be references to external enums (ciselnik). Those enums may also available in previous text.
-9. Also, many of the parameters don't have to be explicitly stated, but rather explained by words and context. Try to infer those.
+5. Format your response in a structured format as follows:
+   PARAMETER_NAME,EXTRACTED_VALUE,LINE_REFERENCE
+   Each parameter on a new line, with the parameter name, value, and line reference separated by commas.
+6. IMPORTANT: For LINE_REFERENCE, you MUST provide a valid line number whenever you extract a value. Always include the specific line number(s) where you found the information.
+7. Use the exact line numbers that are already prepended to each line of the medical text (e.g., "15" or "15-17").
+8. If you cannot find a parameter in the text, output an empty value after the comma and "0" for the line reference.
+9. NEVER provide a non-empty value with a "0" line reference. If you have a value, you must specify where it came from.
+10. Use your knowledge of the common abbreviations to help understand the medical text.
+11. In the parameters, there may be references to external enums (ciselnik). Those enums may also available in previous text.
+12. Also, many of the parameters don't have to be explicitly stated, but rather explained by words and context. Try to infer those.
