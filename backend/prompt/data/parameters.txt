@@ -1,4 +1,4 @@
-Předchozí onkologické onemocnění;Previous oncological diseases;ANO/NE/údaj není k dispozici
+Předchozí onkologické onemocnění;Previous oncological diseases of the person in question (not relatives);ANO/NE/údaj není k dispozici
 Výška;Metrics of pacients height ;číslo [cm]
 Hmotnost;Metric of pacients first measured weight;číslo [kg]
 BMI;Metrics of pacients body mass index if you don t find it try to calculate from found výška and hmotnost parametrs;číslo

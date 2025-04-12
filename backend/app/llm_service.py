@@ -12,8 +12,9 @@ load_dotenv()
 
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 LOCAL_LLM_URL = os.getenv("LOCAL_LLM_URL")
-
 MAX_CONTEXT_LENGTH = 128000
+USE_LOCAL_LLM = not OPENAI_API_KEY
+DEFAULT_MODEL = "gpt-4o-mini"
 
 def fetch_available_models():
     if not OPENAI_API_KEY:
@@ -21,24 +22,17 @@ def fetch_available_models():
     
     try:
         url = "https://api.openai.com/v1/models"
-        headers = {
-            "Authorization": f"Bearer {OPENAI_API_KEY}"
-        }
-        
+        headers = {"Authorization": f"Bearer {OPENAI_API_KEY}"}
         response = requests.get(url, headers=headers)
         
         if response.status_code == 200:
             all_models = response.json()["data"]
-            
             supported_prefixes = ["gpt-4", "gpt-3.5"]
             models = [model["id"] for model in all_models 
                      if any(model["id"].startswith(prefix) for prefix in supported_prefixes)]
             
             models.sort()
-            if not models:
-                models = ["gpt-4o-mini"]
-            
-            return models
+            return models or ["gpt-4o-mini"]
         else:
             return ["gpt-4o-mini"]
     except Exception as e:
@@ -46,8 +40,6 @@ def fetch_available_models():
         return ["gpt-4o-mini"]
 
 AVAILABLE_MODELS = fetch_available_models()
-DEFAULT_MODEL = "gpt-4o-mini"
-USE_LOCAL_LLM = False if OPENAI_API_KEY else True
 
 def check_token_limit(prompt: str, model: str) -> bool:
     try:
@@ -72,10 +64,7 @@ async def get_llm_response(texts: List[str], model: str = DEFAULT_MODEL, analysi
     if not check_token_limit(prompt, model):
         return "Error: Input text is too large for the model's context window. Please reduce the amount of text or try using fewer documents."
     
-    if USE_LOCAL_LLM:
-        return await get_local_llm_response(prompt, model)
-    else:
-        return get_openai_response(prompt, model)
+    return await get_local_llm_response(prompt, model) if USE_LOCAL_LLM else get_openai_response(prompt, model)
 
 def get_openai_response(prompt: str, model: str = DEFAULT_MODEL) -> str:
     if not OPENAI_API_KEY:

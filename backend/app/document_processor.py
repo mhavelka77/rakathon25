@@ -6,7 +6,6 @@ import docx
 from pdf2image import convert_from_path
 import pytesseract
 from PIL import Image
-import io
 import openpyxl
 
 async def process_documents(files: List[UploadFile]) -> List[str]:
@@ -47,12 +46,7 @@ async def process_documents(files: List[UploadFile]) -> List[str]:
 def extract_text_from_pdf(file_path: str) -> str:
     try:
         images = convert_from_path(file_path)
-        
-        text_content = []
-        for image in images:
-            text = pytesseract.image_to_string(image)
-            text_content.append(text)
-        
+        text_content = [pytesseract.image_to_string(image) for image in images]
         return "\n\n".join(text_content)
     except Exception as e:
         return f"Error extracting text from PDF: {str(e)}"
@@ -67,8 +61,7 @@ def extract_text_from_docx(file_path: str) -> str:
 def extract_text_from_image(file_path: str) -> str:
     try:
         image = Image.open(file_path)
-        text = pytesseract.image_to_string(image)
-        return text
+        return pytesseract.image_to_string(image)
     except Exception as e:
         return f"Error extracting text from image: {str(e)}"
 
@@ -90,10 +83,3 @@ def extract_text_from_xlsx(file_path: str) -> str:
         return "\n\n".join(text_content)
     except Exception as e:
         return f"Error extracting text from XLSX: {str(e)}"
-
-
-"""
-The only function in this repository that was written by a human.
-"""
-def bmi(weight:float, height:float) -> float:
-    return weight/(height**2)

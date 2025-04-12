@@ -6,13 +6,12 @@ Team Modprobe p53
 
 
 # todo
-
 - prezentace 
 - az bude vetsina hotova tak jupyter notebook s analyzou dat co mame
 - anonymizace!
 - natocit video
 - deploy .exe?
-
+- vycistit kod
 
 
 # cancelled?
@@ -20,8 +19,6 @@ Team Modprobe p53
 - napsat dokumentaci
 - Ukazat modelu priklad
 - Second round of LLM sanity check?
-
-
 
 # done
 - personalizace

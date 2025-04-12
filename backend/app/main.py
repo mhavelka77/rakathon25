@@ -1,7 +1,6 @@
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
-from typing import List, Optional, Dict
+from typing import List, Optional
 import os
 
 from app.document_processor import process_documents
@@ -31,7 +30,6 @@ async def get_models():
 
 @app.get("/api/parameter-descriptions")
 async def get_parameter_descriptions():
-    """Return the parameter descriptions for both standard and extended analysis"""
     try:
         standard_descriptions = load_parameters_descriptions("standard")
         extended_descriptions = load_parameters_descriptions("extended")
@@ -65,7 +63,6 @@ async def process_data(
         if model not in AVAILABLE_MODELS:
             model = DEFAULT_MODEL
         
-        # Combine the document texts
         combined_text = "\n\n".join(document_texts)
         
         llm_response = await get_llm_response(document_texts, model, analysis_type)

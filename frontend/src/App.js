@@ -97,6 +97,110 @@ function App() {
     setFiles(prevFiles => prevFiles.filter((_, i) => i !== index));
   };
 
+  const parseLineData = (processedLine) => {
+    const parts = [];
+    let inQuotes = false;
+    let currentValue = '';
+    
+    for (let i = 0; i < processedLine.length; i++) {
+      const char = processedLine[i];
+      
+      if (char === '"') {
+        inQuotes = !inQuotes;
+        continue;
+      }
+      
+      if (char === ',' && !inQuotes) {
+        parts.push(currentValue);
+        currentValue = '';
+        continue;
+      }
+      
+      currentValue += char;
+    }
+    
+    if (currentValue) {
+      parts.push(currentValue);
+    }
+    
+    return parts;
+  };
+
+  const parseStandardResponse = (responseText) => {
+    const lines = responseText.trim().split('\n');
+    return lines
+      .filter(line => !line.trim().startsWith('```'))
+      .map(line => {
+        const processedLine = line.trim();
+        const parts = parseLineData(processedLine);
+        
+        if (parts.length >= 3) {
+          return { 
+            parameter: parts[0].trim(), 
+            value: parts[1] ? parts[1].trim() : '',
+            lineRef: parts[2] ? parts[2].trim() : '0'
+          };
+        } else if (parts.length === 2) {
+          return { 
+            parameter: parts[0].trim(), 
+            value: parts[1] ? parts[1].trim() : '',
+            lineRef: '0'
+          };
+        } else {
+          return { 
+            parameter: processedLine.trim(), 
+            value: '',
+            lineRef: '0'
+          };
+        }
+    });
+  };
+
+  const parseExtendedResponse = (responseText) => {
+    const lines = responseText.trim().split('\n');
+    const parsedLines = lines
+      .filter(line => !line.trim().startsWith('```'))
+      .map(line => {
+        const processedLine = line.trim();
+        const parts = parseLineData(processedLine);
+        
+        if (parts.length >= 3) {
+          const paramWithCategory = parts[0].trim();
+          const splitParams = paramWithCategory.split('-');
+          
+          const category = splitParams[0].trim();
+          const parameter = splitParams.length > 1 ? splitParams[1].trim() : '';
+          
+          const value = parts[1] ? parts[1].trim() : '';
+          const lineRef = parts[parts.length - 1] ? parts[parts.length - 1].trim() : '0';
+          
+          return { 
+            category, 
+            parameter,
+            value,
+            lineRef
+          };
+        } else {
+          return { 
+            category: 'Unknown', 
+            parameter: parts[0] || 'Unknown',
+            value: parts.length > 1 ? parts[1] : '',
+            lineRef: '0'
+          };
+        }
+    });
+    
+    const categories = {};
+    parsedLines.forEach(item => {
+      if (item.category) {
+        categories[item.category] = false;
+      }
+    });
+    
+    setExpandedCategories(categories);
+    return parsedLines.filter(item => item.category && item.parameter);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -114,20 +218,15 @@ function App() {
 
     const formData = new FormData();
     
-    // Add all files to the form data
     files.forEach(file => {
       formData.append('files', file);
     });
 
-    // Add text input if available
     if (textInput) {
       formData.append('text_input', textInput);
     }
 
-    // Add selected model
     formData.append('model', selectedModel);
-    
-    // Add analysis type
     formData.append('analysis_type', analysisType);
 
     try {
@@ -140,142 +239,10 @@ function App() {
       setResponse(result.data.response);
       setCombinedText(result.data.combined_text);
       
-      // Parse the response based on the analysis type
       if (analysisType === 'standard') {
-        // Parse the CSV-like response into an array of parameter value pairs with line references
-        const lines = result.data.response.trim().split('\n');
-        const parsedLines = lines
-          .filter(line => !line.trim().startsWith('```')) // Skip markdown code block markers
-          .map(line => {
-          // Handle possible quotes in the CSV values
-          const processedLine = line.trim();
-          const parts = [];
-          let inQuotes = false;
-          let currentValue = '';
-          
-          for (let i = 0; i < processedLine.length; i++) {
-            const char = processedLine[i];
-            
-            if (char === '"') {
-              inQuotes = !inQuotes;
-              continue;
-            }
-            
-            if (char === ',' && !inQuotes) {
-              parts.push(currentValue);
-              currentValue = '';
-              continue;
-            }
-            
-            currentValue += char;
-          }
-          
-          // Add the last part
-          if (currentValue) {
-            parts.push(currentValue);
-          }
-          
-          // Format the data
-          if (parts.length >= 3) {
-            return { 
-              parameter: parts[0].trim(), 
-              value: parts[1] ? parts[1].trim() : '',
-              lineRef: parts[2] ? parts[2].trim() : '0'
-            };
-          } else if (parts.length === 2) {
-            return { 
-              parameter: parts[0].trim(), 
-              value: parts[1] ? parts[1].trim() : '',
-              lineRef: '0'
-            };
-          } else {
-            return { 
-              parameter: processedLine.trim(), 
-              value: '',
-              lineRef: '0'
-            };
-          }
-        });
-        
-        console.log('Parsed data:', parsedLines);
-        setParsedData(parsedLines);
+        setParsedData(parseStandardResponse(result.data.response));
       } else {
-        // Parse the extended format with categories and line references
-        const lines = result.data.response.trim().split('\n');
-        
-        const parsedLines = lines
-          .filter(line => !line.trim().startsWith('```')) // Skip markdown code block markers
-          .map(line => {
-          // Handle possible quotes in the CSV values
-          const processedLine = line.trim();
-          const parts = [];
-          let inQuotes = false;
-          let currentValue = '';
-          
-          for (let i = 0; i < processedLine.length; i++) {
-            const char = processedLine[i];
-            
-            if (char === '"') {
-              inQuotes = !inQuotes;
-              continue;
-            }
-            
-            if (char === ',' && !inQuotes) {
-              parts.push(currentValue);
-              currentValue = '';
-              continue;
-            }
-            
-            currentValue += char;
-          }
-          
-          // Add the last part
-          if (currentValue) {
-            parts.push(currentValue);
-          }
-          
-          if (parts.length >= 3) {
-            // Split the parameter name to get category and parameter
-            const paramWithCategory = parts[0].trim();
-            const splitParams = paramWithCategory.split('-');
-            
-            const category = splitParams[0].trim();
-            const parameter = splitParams.length > 1 ? splitParams[1].trim() : '';
-            
-            // The value is the second part, lineRef is the last part
-            const value = parts[1] ? parts[1].trim() : '';
-            const lineRef = parts[parts.length - 1] ? parts[parts.length - 1].trim() : '0';
-            
-            return { 
-              category: category, 
-              parameter: parameter,
-              value: value,
-              lineRef: lineRef
-            };
-          } else {
-            console.error("Invalid format in line:", processedLine);
-            return { 
-              category: 'Unknown', 
-              parameter: parts[0] || 'Unknown',
-              value: parts.length > 1 ? parts[1] : '',
-              lineRef: '0'
-            };
-          }
-        });
-        
-        // Initialize all categories as collapsed
-        const categories = {};
-        parsedLines.forEach(item => {
-          if (item.category) {
-            categories[item.category] = false;
-          }
-        });
-        
-        // Filter out any invalid items
-        const validParsedLines = parsedLines.filter(item => item.category && item.parameter);
-        
-        setParsedData(validParsedLines);
-        setExpandedCategories(categories);
+        setParsedData(parseExtendedResponse(result.data.response));
       }
     } catch (error) {
       console.error("Error processing documents:", error);
@@ -305,7 +272,6 @@ function App() {
   const highlightLines = (lineRef) => {
     if (!lineRef || lineRef === '0') return;
     
-    // Parse line reference (could be single number or range like "15-17")
     let linesToHighlight = [];
     
     if (lineRef.includes('-')) {
@@ -319,12 +285,10 @@ function App() {
     
     setHighlightedLines(linesToHighlight);
     
-    // Scroll to the highlighted lines
     if (textDisplayRef.current && linesToHighlight.length > 0) {
       const lineElements = textDisplayRef.current.querySelectorAll('.line');
       const targetLineNumber = linesToHighlight[0];
       
-      // Find the element with the matching data-line-number attribute
       for (let i = 0; i < lineElements.length; i++) {
         const elementLineNumber = parseInt(lineElements[i].getAttribute('data-line-number'));
         if (elementLineNumber === targetLineNumber) {
@@ -337,7 +301,6 @@ function App() {
 
   // Export data as CSV with line references
   const exportToCSV = () => {
-    // Create CSV content
     let csvContent = "";
     
     if (analysisType === 'standard') {
@@ -348,18 +311,15 @@ function App() {
         parsedData.map(row => `"${row.category}","${row.parameter}","${row.value}"`).join('\n');
     }
     
-    // Create a blob and download link
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     
-    // Create a temporary link and trigger the download
     const link = document.createElement('a');
     link.href = url;
     link.setAttribute('download', 'extracted_parameters.csv');
     document.body.appendChild(link);
     link.click();
     
-    // Clean up
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
   };
@@ -592,10 +552,8 @@ function App() {
               </div>
               <div className="text-display" ref={textDisplayRef}>
                 {combinedText.split('\n').map((line, index) => {
-                  // Extract the line number if it exists in the format "123: text"
                   const lineNumberMatch = line.match(/^(\d+):\s/);
                   const lineNumber = lineNumberMatch ? parseInt(lineNumberMatch[1]) : (index + 1);
-                  // Remove the line number prefix from the content if it exists
                   const content = lineNumberMatch ? line.substring(line.indexOf(': ') + 2) : line;
                   
                   return (
@@ -709,10 +667,8 @@ function App() {
               </div>
               <div className="text-display" ref={textDisplayRef}>
                 {combinedText.split('\n').map((line, index) => {
-                  // Extract the line number if it exists in the format "123: text"
                   const lineNumberMatch = line.match(/^(\d+):\s/);
                   const lineNumber = lineNumberMatch ? parseInt(lineNumberMatch[1]) : (index + 1);
-                  // Remove the line number prefix from the content if it exists
                   const content = lineNumberMatch ? line.substring(line.indexOf(': ') + 2) : line;
                   
                   return (

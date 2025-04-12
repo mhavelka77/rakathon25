@@ -23,7 +23,6 @@ INSTRUCTIONS:
 6. IMPORTANT: For LINE_REFERENCE, you MUST provide a valid line number whenever you extract a value. Always include the specific line number(s) where you found the information.
 7. Use the exact line numbers that are already prepended to each line of the medical text (e.g., "15" or "15-17").
 8. If you cannot find a parameter in the text, output an empty value after the comma and "0" for the line reference.
-9. NEVER provide a non-empty value with a "0" line reference. If you have a value, you must specify where it came from.
+9. Also, many of the parameters don't have to be explicitly stated, but rather explained by words and context. Try to infer those.
 10. Use your knowledge of the common abbreviations to help understand the medical text.
 11. In the parameters, there may be references to external enums (ciselnik). Those enums may also available in previous text.
-12. Also, many of the parameters don't have to be explicitly stated, but rather explained by words and context. Try to infer those.

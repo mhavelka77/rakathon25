@@ -56,7 +56,8 @@ def load_all_data(analysis_type: str = "standard") -> Dict[str, str]:
             with open(file_path, 'r', encoding='utf-8') as file:
                 # If this is the parameters file and we're using extended analysis, use the extended version instead
                 if var_name == "parameters" and analysis_type == "extended":
-                    data[var_name] = open(os.path.join(PROMPT_DATA_DIR, "parameters_extended.txt"), 'r', encoding='utf-8').read()
+                    with open(os.path.join(PROMPT_DATA_DIR, "parameters_extended.txt"), 'r', encoding='utf-8') as file:
+                        data[var_name] = file.read()
                 else:
                     data[var_name] = file.read()
                 

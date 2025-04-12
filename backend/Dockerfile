@@ -1,40 +1,42 @@
-FROM python:3.10-alpine AS builder
+FROM python:3.11-slim AS builder
+
+WORKDIR /app
 
 # Install build dependencies
-RUN apk add --no-cache --virtual .build-deps \
-    gcc \
-    g++ \
-    musl-dev \
-    python3-dev \
-    linux-headers \
-    cmake \
-    make
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements and install Python dependencies
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
+
+# Final stage
+FROM python:3.11-slim
 
 WORKDIR /app
 
-# Copy and install requirements in a separate layer
-COPY requirements.txt .
-RUN pip install --no-cache-dir --user -r requirements.txt
-
-# Create final image
-FROM python:3.10-alpine
-
-# Install only runtime dependencies
-RUN apk add --no-cache \
+# Install runtime dependencies required for PDF image conversion
+RUN apt-get update && apt-get install -y \
     poppler-utils \
     tesseract-ocr \
-    libreoffice \
-    libstdc++
+    libgl1-mesa-glx \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /app
-
-# Copy installed packages from builder
-COPY --from=builder /root/.local /root/.local
-ENV PATH=/root/.local/bin:$PATH
+# Copy installed packages from builder stage
+COPY --from=builder /install /usr/local
 
 # Copy application code
-COPY . .
+COPY . /app/
 
-EXPOSE 8000
+# Create directory for prompt files
+RUN mkdir -p /app/prompt
 
+# Set environment variables
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+
+# Run the application
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"] 
