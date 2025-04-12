@@ -45,3 +45,14 @@ SLN;sentinelová uzlina
 TM;tumor markery
 TU;tumor
 USG;ultrasonografie
+AA; Alergická anamnéza (Allergy history)
+FA; Farmakologická anamnéza (Medication history)
+SA; Sociální anamnéza (Social history)
+Abusus; Užívání látek (Substance use)
+ECOG; Performance status (Eastern Cooperative Oncology Group)
+PEG; Percutaneous Endoscopic Gastrostomy (Feeding tube)
+PICC; Peripherally Inserted Central Catheter (IV catheter)
+p.o.; per os (By mouth)
+s.c.; subkutánně (Under the skin)
+RT; Radioterapie (Radiotherapy)
+ORL; Otolaryngologie (ENT)
