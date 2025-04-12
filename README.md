@@ -11,17 +11,20 @@ Team Modprobe p53
 - az bude vetsina hotova tak jupyter notebook s analyzou dat co mame
 - napsat dokumentaci
 - Lepsi UI?
-- Ukazat modelu priklad
 - Second round of LLM sanity check?
-- ECOG - daat inicialni 
 - lokalni model!
 - reference na puvodni text! 
-- zkusit vsech 300 params. Udelat switch na Frontend na bud pouzit advanced nebo simple view!
+- natocit video
+    - natocit doktora a no copyright music
 
+# cancelled?
+- Ukazat modelu priklad
 
 
 
 # done
+- zkusit vsech 300 params. Udelat switch na Frontend na bud pouzit advanced nebo simple view!
+- ECOG - daat inicialni 
 - vybrat parametry
 - pridat do promptu ciselniky
 - vycistit a zjednodusit kod na konci

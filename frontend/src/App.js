@@ -6,48 +6,6 @@ import { Circles } from 'react-loader-spinner';
 // API URL from environment variable or default
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
 
-// Hardcoded mapping of parameter names to descriptions
-const PARAMETER_DESCRIPTIONS = {
-  "Předchozí onkologické onemocnění": "Previous oncological diseases",
-  "Výška": "Metrics of pacients height",
-  "Hmotnost": "Metrics of pacients weight",
-  "BMI": "Metrics of pacients body mass index",
-  "Pohlaví": "Pacients sex",
-  "Léková alergie": "Pacients allergies for medications",
-  "Specifikace": "Specification of pacients allergies for medications",
-  "Alergie na jód/kontrastní látky": "Pacients allergy to iodine or contrast substances",
-  "Performance status (ECOG)": "Measurement of pacients performance status based on this dial: 0 - Plně aktivní, je schopen normální tělesné aktivity bez omezení; 1 - Omezení fyzických náročných aktivit, ambulantní, schopen lehčí práce, např. domácí práce, kancelářská práce; 2 - Ambulantní, soběstačný, ale neschopen jakékoliv práce. Tráví více než 50% denní doby mimo lůžko; 3 - Omezeně soběstačný. Přes den tráví na lůžku více než 50% denní doby; 4 - Zcela nesoběstačný. Trvale upoután na lůžko nebo do křesla, 5 - Mrtvý",
-  "Datum stanovení definitivní diagnózy": "Date of definitive diagnosis of the tumor",
-  "Diagnóza - kód MKN": "The diagnosis of a tumor based on the MKN dial",
-  "Lateralita": "Specification on which side of the body or a paired organ a tumor is located.",
-  "Grading (diferenciace nádoru) G": "The differentiation of the tumor based on the MKN-O code for grading",
-  "ORPHA kód": "Specification of the differentiation of the tumor based on the ORPHA dial",
-  "cT": "Defining code of the stage of tumor based on Klinická TNM klasifikace for the cT variable (based on this scale: X, 0, is, 1, 2, 3, 4 )",
-  "četnost": "Frequency of tumor showing based on the scale of Klinická TNM klasifikace (based on this scale: 1,2,3,m)",
-  "cN": "Defining code of the stage of tumor based on Klinická TNM klasifikace for the cN variable (based on this scale: X, 0, 1, 2, 3 )",
-  "cM": "Defining code of the stage of tumor based on Klinická TNM klasifikace for the cM variable (based on this scale: X, 0, 1, )",
-  "y": "Classification after primary multimodal treatment based on Patologická TNM klasifikace for the y variable (based on this scale: 0/1)",
-  "r": "Classification of recurrent tumour based on Patologická TNM klasifikace for the y variable (based on this scale: 0/1)",
-  "a": "Classification first determined at autopsy based on Patologická TNM klasifikace for the y variable (based on this scale: 0/1)",
-  "pT": "Defining code of the stage of tumor based on Patologická TNM klasifikace for the pT variable (based on this scale: X, 0, is, 1, 2, 3, 4 )",
-  "pM": "Defining code of the stage of tumor based on Patologická TNM klasifikace for the pM variable (based on this scale: X, 0, 1, )",
-  "Stádium": "Stage of the tumor based on Patologická TNM klasifikace",
-  "Lokalizace metastáz": "Localization of the tumor for Patologická TNM clasification based this list: mozek, plíce, játra, viscerální mimo výše uvedené, kost, měkké tkáně, jiné, žádné",
-  "Výběr diagnostické skupiny": "Specification of the diagnosis group based on this list: Nádory CNS, Nádory hlavy a krku, Nádory respiračního systému a mediastina, Nádory GIT (Karcinom jícnu), Nádory GIT (Karcinom žaludku a gastroezofageální junkce), Nádory GIT (Kolorektální karcinom), Nádory GIT (Anální karcinom), Nádory GIT (Karcinom pankreatu), Nádory GIT (Karcinom jater), Nádory GIT (Karcinom žlučníku a žluč.cest), Karcinom prsu, Gynekologické nádory (čípek a hrdlo děložní), Gynekologické nádory (tělo děložní), Gynekologické nádory (ovaria), Gynekologické nádory (zevní rodidla), Renální karcinom, Karcinom močového měchýře a moč.cest, Karcinom prostaty, Germinální nádory pohlavních orgánů, Nongerminální nádory pohlavních orgánů, Epidermální nádory kůže, Maligní melanom, Nádory kostí a sarkomy měkkých tkání, Nádory endokrinních žláz",
-  "Datum zahájení léčby": "Date of the pacients start of the oncological treatment",
-  "Datum operace": "Date of pacients surgical tumor operation",
-  "Datum zahájení": "Date of beggining of pacients chemotherapy",
-  "Datum ukončení": "Date of end of pacients chemotherapy",
-  "Datum zahájení série": "Start date of radiotherapy series",
-  "Datum ukončení série": "End date of radiotherapy series",
-  "Zevní radioterapie": "Defining if external radiotherapy was done",
-  "Typ zevní RT:": "Type of external radiotherapy if it was done",
-  "Brachyterapie": "Defining if brachytherapy was done",
-  "Datum hodnocení léčebné odpovědi": "Date of assessment of treatment response",
-  "Hodnocená léčebná odpověď": "Assessment of treatment response based of the choice from this list: Kompletní remise (CR)/Parciální remise(PR)/Stabilizace(SD)/Progrese(PD)/Nelze hodnotit",
-  "Progrese": "Progress of the tumor based on this list: lokální recidiva / diseminace"
-};
-
 function App() {
   const [files, setFiles] = useState([]);
   const [textInput, setTextInput] = useState('');
@@ -58,20 +16,29 @@ function App() {
   const [selectedModel, setSelectedModel] = useState('');
   const [analysisType, setAnalysisType] = useState('standard');
   const [expandedCategories, setExpandedCategories] = useState({});
+  const [parameterDescriptions, setParameterDescriptions] = useState({
+    standard: {},
+    extended: {}
+  });
 
-  // Fetch available models on component mount
+  // Fetch available models and parameter descriptions on component mount
   useEffect(() => {
-    const fetchModels = async () => {
+    const fetchInitialData = async () => {
       try {
-        const response = await axios.get(`${API_URL}/api/models`);
-        setAvailableModels(response.data.models);
-        setSelectedModel(response.data.default_model);
+        // Fetch models
+        const modelsResponse = await axios.get(`${API_URL}/api/models`);
+        setAvailableModels(modelsResponse.data.models);
+        setSelectedModel(modelsResponse.data.default_model);
+        
+        // Fetch parameter descriptions
+        const descriptionsResponse = await axios.get(`${API_URL}/api/parameter-descriptions`);
+        setParameterDescriptions(descriptionsResponse.data);
       } catch (error) {
-        console.error('Error fetching models:', error);
+        console.error('Error fetching initial data:', error);
       }
     };
 
-    fetchModels();
+    fetchInitialData();
   }, []);
 
   const onDrop = useCallback(acceptedFiles => {
@@ -147,23 +114,63 @@ function App() {
       } else {
         // Parse the extended format with categories
         const lines = result.data.response.trim().split('\n');
+        
+        // Log the raw response
+        console.log("Raw extended response:", result.data.response);
+        
         const parsedLines = lines.map(line => {
-          const [paramWithCategory, value] = line.split(',');
-          const [category, parameter] = paramWithCategory.split(':');
+          // Find the first comma that is not inside quotes
+          let splitIndex = -1;
+          let inQuotes = false;
+          
+          for (let i = 0; i < line.length; i++) {
+            if (line[i] === '"') {
+              inQuotes = !inQuotes;
+            } else if (line[i] === ',' && !inQuotes) {
+              splitIndex = i;
+              break;
+            }
+          }
+          
+          // If no suitable comma found, just use the first one
+          if (splitIndex === -1) {
+            splitIndex = line.indexOf(',');
+          }
+          
+          const paramWithCategory = line.substring(0, splitIndex);
+          const value = line.substring(splitIndex + 1);
+          
+          // Split the parameter and category by hyphen
+          const [category, parameter] = paramWithCategory.split('-');
+          
           return { 
             category: category.trim(), 
-            parameter: parameter.trim(), 
-            value: value ? value.trim() : '' 
+            parameter: parameter ? parameter.trim() : '',
+            value: value ? value.trim().replace(/^"|"$/g, '') : '' // Remove surrounding quotes 
           };
         });
-        
-        setParsedData(parsedLines);
         
         // Initialize all categories as collapsed
         const categories = {};
         parsedLines.forEach(item => {
-          categories[item.category] = false;
+          if (item.category) {
+            categories[item.category] = false;
+          } else {
+            console.error("Found item without category:", item);
+          }
         });
+        
+        // Filter out any invalid items (shouldn't happen, but just in case)
+        const validParsedLines = parsedLines.filter(item => item.category && item.parameter);
+        
+        if (validParsedLines.length < parsedLines.length) {
+          console.warn(`Filtered out ${parsedLines.length - validParsedLines.length} invalid items`);
+        }
+        
+        // Check if we have all the data
+        console.log(`Parsed ${validParsedLines.length} parameters from ${lines.length} lines`);
+        
+        setParsedData(validParsedLines);
         setExpandedCategories(categories);
       }
     } catch (error) {
@@ -172,6 +179,15 @@ function App() {
     } finally {
       setLoading(false);
     }
+  };
+
+  // Helper function to get description for a parameter
+  const getParameterDescription = (parameter) => {
+    const descriptionsMap = analysisType === 'standard' 
+      ? parameterDescriptions.standard 
+      : parameterDescriptions.extended;
+    
+    return descriptionsMap[parameter] || '';
   };
 
   // Handle edits to the parameter values in the table
@@ -185,6 +201,9 @@ function App() {
   const exportToCSV = () => {
     // Create CSV content
     let csvContent = "";
+    
+    // Log the data being exported to help with debugging
+    console.log("Exporting data:", parsedData);
     
     if (analysisType === 'standard') {
       csvContent = "Parameter,Value\n" + 
@@ -269,26 +288,20 @@ function App() {
       <div className="analysis-type-switch">
         <h3>Analysis Type:</h3>
         <div className="switch-container">
-          <label className={`switch-option ${analysisType === 'standard' ? 'active' : ''}`}>
-            <input
-              type="radio"
-              name="analysisType"
-              value="standard"
-              checked={analysisType === 'standard'}
-              onChange={() => setAnalysisType('standard')}
-            />
+          <button 
+            type="button"
+            className={`switch-option ${analysisType === 'standard' ? 'active' : ''}`}
+            onClick={() => setAnalysisType('standard')}
+          >
             Standard Analysis
-          </label>
-          <label className={`switch-option ${analysisType === 'extended' ? 'active' : ''}`}>
-            <input
-              type="radio"
-              name="analysisType"
-              value="extended"
-              checked={analysisType === 'extended'}
-              onChange={() => setAnalysisType('extended')}
-            />
+          </button>
+          <button 
+            type="button"
+            className={`switch-option ${analysisType === 'extended' ? 'active' : ''}`}
+            onClick={() => setAnalysisType('extended')}
+          >
             Extended Analysis
-          </label>
+          </button>
         </div>
       </div>
 
@@ -337,9 +350,9 @@ function App() {
                 <tr key={index}>
                   <td>
                     <div className="parameter-name">{row.parameter}</div>
-                    {PARAMETER_DESCRIPTIONS[row.parameter] && (
+                    {getParameterDescription(row.parameter) && (
                       <div className="parameter-description">
-                        {PARAMETER_DESCRIPTIONS[row.parameter]}
+                        {getParameterDescription(row.parameter)}
                       </div>
                     )}
                   </td>
@@ -398,11 +411,6 @@ function App() {
                             <tr key={index}>
                               <td>
                                 <div className="parameter-name">{row.parameter}</div>
-                                {PARAMETER_DESCRIPTIONS[row.parameter] && (
-                                  <div className="parameter-description">
-                                    {PARAMETER_DESCRIPTIONS[row.parameter]}
-                                  </div>
-                                )}
                               </td>
                               <td>
                                 <input

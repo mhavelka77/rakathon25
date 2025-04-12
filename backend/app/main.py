@@ -1,11 +1,12 @@
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
-from typing import List, Optional
+from typing import List, Optional, Dict
 import os
 
 from app.document_processor import process_documents
 from app.llm_service import get_llm_response, AVAILABLE_MODELS, DEFAULT_MODEL
+from app.prompt import load_parameters_descriptions
 
 app = FastAPI(title="Document Processing API")
 
@@ -27,6 +28,20 @@ async def get_models():
         "models": AVAILABLE_MODELS,
         "default_model": DEFAULT_MODEL
     }
+
+@app.get("/api/parameter-descriptions")
+async def get_parameter_descriptions():
+    """Return the parameter descriptions for both standard and extended analysis"""
+    try:
+        standard_descriptions = load_parameters_descriptions("standard")
+        extended_descriptions = load_parameters_descriptions("extended")
+        
+        return {
+            "standard": standard_descriptions,
+            "extended": extended_descriptions
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error loading parameter descriptions: {str(e)}")
 
 @app.post("/api/process")
 async def process_data(

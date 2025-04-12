@@ -266,19 +266,19 @@ textarea {
   border: 1px solid #ccc;
   border-radius: 4px;
   cursor: pointer;
+  background-color: #fff;
+  font-size: 1rem;
+  font-family: inherit;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: center;
+  min-width: 150px;
 }
 
 .switch-option.active {
   background-color: #0087F7;
   color: white;
   border-color: #0087F7;
-}
-
-.switch-option input {
-  margin: 0;
 }
 
 /* Categorized Parameters */

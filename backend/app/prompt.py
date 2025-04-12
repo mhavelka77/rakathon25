@@ -12,6 +12,31 @@ def load_template() -> str:
     with open(PROMPT_TEMPLATE_PATH, 'r', encoding='utf-8') as file:
         return file.read()
 
+def load_parameters_descriptions(analysis_type: str = "standard") -> Dict[str, str]:
+    """Load parameter descriptions from the parameters file."""
+    descriptions = {}
+    
+    try:
+        # Only load descriptions for standard parameters
+        if analysis_type == "standard":
+            file_path = os.path.join(PROMPT_DATA_DIR, "parameters.txt")
+                
+            with open(file_path, 'r', encoding='utf-8') as file:
+                content = file.read()
+                lines = content.strip().split('\n')
+                
+                for line in lines:
+                    parts = line.split(';')
+                    if len(parts) >= 2:
+                        param_name = parts[0].strip()
+                        description = parts[1].strip()
+                        descriptions[param_name] = description
+                            
+    except Exception as e:
+        print(f"Error loading parameter descriptions: {str(e)}")
+        
+    return descriptions
+
 def load_all_data(analysis_type: str = "standard") -> Dict[str, str]:
     """Dynamically load all files from the data directory"""
     data = {}
