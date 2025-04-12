@@ -32,7 +32,8 @@ async def get_models():
 async def process_data(
     files: Optional[List[UploadFile]] = File(None),
     text_input: Optional[str] = Form(None),
-    model: Optional[str] = Form(DEFAULT_MODEL)
+    model: Optional[str] = Form(DEFAULT_MODEL),
+    analysis_type: Optional[str] = Form("standard")
 ):
     try:
         document_texts = []
@@ -49,11 +50,12 @@ async def process_data(
         if model not in AVAILABLE_MODELS:
             model = DEFAULT_MODEL
         
-        llm_response = await get_llm_response(document_texts, model)
+        llm_response = await get_llm_response(document_texts, model, analysis_type)
         
         return {
             "success": True,
             "response": llm_response,
+            "analysis_type": analysis_type
         }
     
     except Exception as e:

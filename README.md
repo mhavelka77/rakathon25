@@ -20,6 +20,7 @@ Team Modprobe p53
 
 
 
+
 # done
 - vybrat parametry
 - pridat do promptu ciselniky

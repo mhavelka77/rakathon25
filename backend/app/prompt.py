@@ -12,7 +12,7 @@ def load_template() -> str:
     with open(PROMPT_TEMPLATE_PATH, 'r', encoding='utf-8') as file:
         return file.read()
 
-def load_all_data() -> Dict[str, str]:
+def load_all_data(analysis_type: str = "standard") -> Dict[str, str]:
     """Dynamically load all files from the data directory"""
     data = {}
     try:
@@ -23,22 +23,30 @@ def load_all_data() -> Dict[str, str]:
             # Extract the filename without extension to use as the variable name
             var_name = os.path.splitext(os.path.basename(file_path))[0]
             
+            # Skip the extended parameters file if we're using standard analysis
+            if var_name == "parameters_extended" and analysis_type == "standard":
+                continue
+                
             # Read the file content
             with open(file_path, 'r', encoding='utf-8') as file:
-                data[var_name] = file.read()
+                # If this is the parameters file and we're using extended analysis, use the extended version instead
+                if var_name == "parameters" and analysis_type == "extended":
+                    data[var_name] = open(os.path.join(PROMPT_DATA_DIR, "parameters_extended.txt"), 'r', encoding='utf-8').read()
+                else:
+                    data[var_name] = file.read()
                 
     except Exception as e:
         print(f"Error loading data files: {str(e)}")
     
     return data
 
-def create_prompt(texts: List[str]) -> str:
+def create_prompt(texts: List[str], analysis_type: str = "standard") -> str:
     """Create the final prompt by combining the template with all data files"""
     combined_text = "\n\n".join(texts)
     
     # Load the template and all data files
     template = load_template()
-    data = load_all_data()
+    data = load_all_data(analysis_type)
     
     # Add the combined text to the data
     data['combined_text'] = combined_text

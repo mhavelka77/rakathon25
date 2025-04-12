@@ -56,6 +56,8 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [availableModels, setAvailableModels] = useState([]);
   const [selectedModel, setSelectedModel] = useState('');
+  const [analysisType, setAnalysisType] = useState('standard');
+  const [expandedCategories, setExpandedCategories] = useState({});
 
   // Fetch available models on component mount
   useEffect(() => {
@@ -103,6 +105,7 @@ function App() {
     setLoading(true);
     setResponse('');
     setParsedData([]);
+    setExpandedCategories({});
 
     const formData = new FormData();
     
@@ -118,6 +121,9 @@ function App() {
 
     // Add selected model
     formData.append('model', selectedModel);
+    
+    // Add analysis type
+    formData.append('analysis_type', analysisType);
 
     try {
       const result = await axios.post(`${API_URL}/api/process`, formData, {
@@ -128,14 +134,38 @@ function App() {
 
       setResponse(result.data.response);
       
-      // Parse the CSV-like response into an array of parameter value pairs
-      const lines = result.data.response.trim().split('\n');
-      const parsedLines = lines.map(line => {
-        const [parameter, value] = line.split(',');
-        return { parameter: parameter.trim(), value: value ? value.trim() : '' };
-      });
-      
-      setParsedData(parsedLines);
+      // Parse the response based on the analysis type
+      if (analysisType === 'standard') {
+        // Parse the CSV-like response into an array of parameter value pairs
+        const lines = result.data.response.trim().split('\n');
+        const parsedLines = lines.map(line => {
+          const [parameter, value] = line.split(',');
+          return { parameter: parameter.trim(), value: value ? value.trim() : '' };
+        });
+        
+        setParsedData(parsedLines);
+      } else {
+        // Parse the extended format with categories
+        const lines = result.data.response.trim().split('\n');
+        const parsedLines = lines.map(line => {
+          const [paramWithCategory, value] = line.split(',');
+          const [category, parameter] = paramWithCategory.split(':');
+          return { 
+            category: category.trim(), 
+            parameter: parameter.trim(), 
+            value: value ? value.trim() : '' 
+          };
+        });
+        
+        setParsedData(parsedLines);
+        
+        // Initialize all categories as collapsed
+        const categories = {};
+        parsedLines.forEach(item => {
+          categories[item.category] = false;
+        });
+        setExpandedCategories(categories);
+      }
     } catch (error) {
       console.error("Error processing documents:", error);
       setResponse(`Error: ${error.response?.data?.detail || 'Something went wrong. Please try again.'}`);
@@ -154,9 +184,15 @@ function App() {
   // Export data as CSV
   const exportToCSV = () => {
     // Create CSV content
-    const csvContent = 
-      "Parameter,Value\n" + 
-      parsedData.map(row => `"${row.parameter}","${row.value}"`).join('\n');
+    let csvContent = "";
+    
+    if (analysisType === 'standard') {
+      csvContent = "Parameter,Value\n" + 
+        parsedData.map(row => `"${row.parameter}","${row.value}"`).join('\n');
+    } else {
+      csvContent = "Category,Parameter,Value\n" + 
+        parsedData.map(row => `"${row.category}","${row.parameter}","${row.value}"`).join('\n');
+    }
     
     // Create a blob and download link
     const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -172,6 +208,19 @@ function App() {
     // Clean up
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
+  };
+  
+  const toggleCategory = (category) => {
+    setExpandedCategories(prev => ({
+      ...prev,
+      [category]: !prev[category]
+    }));
+  };
+  
+  // Get unique categories for extended view
+  const getUniqueCategories = () => {
+    if (analysisType !== 'extended' || !parsedData.length) return [];
+    return [...new Set(parsedData.map(item => item.category))];
   };
 
   return (
@@ -216,6 +265,32 @@ function App() {
           ))}
         </select>
       </div>
+      
+      <div className="analysis-type-switch">
+        <h3>Analysis Type:</h3>
+        <div className="switch-container">
+          <label className={`switch-option ${analysisType === 'standard' ? 'active' : ''}`}>
+            <input
+              type="radio"
+              name="analysisType"
+              value="standard"
+              checked={analysisType === 'standard'}
+              onChange={() => setAnalysisType('standard')}
+            />
+            Standard Analysis
+          </label>
+          <label className={`switch-option ${analysisType === 'extended' ? 'active' : ''}`}>
+            <input
+              type="radio"
+              name="analysisType"
+              value="extended"
+              checked={analysisType === 'extended'}
+              onChange={() => setAnalysisType('extended')}
+            />
+            Extended Analysis
+          </label>
+        </div>
+      </div>
 
       <button
         className="button"
@@ -242,7 +317,7 @@ function App() {
         </div>
       )}
 
-      {parsedData.length > 0 && (
+      {parsedData.length > 0 && analysisType === 'standard' && (
         <div className="parameter-table-container">
           <h3>Extracted Parameters:</h3>
           <div className="table-controls">
@@ -279,6 +354,72 @@ function App() {
               ))}
             </tbody>
           </table>
+        </div>
+      )}
+      
+      {parsedData.length > 0 && analysisType === 'extended' && (
+        <div className="parameter-table-container">
+          <h3>Extracted Parameters (Extended):</h3>
+          <div className="table-controls">
+            <button onClick={exportToCSV} className="export-button">
+              Export to CSV
+            </button>
+          </div>
+          
+          <div className="categorized-parameters">
+            {getUniqueCategories().map(category => (
+              <div key={category} className="parameter-category">
+                <div 
+                  className="category-header" 
+                  onClick={() => toggleCategory(category)}
+                >
+                  <h4>{category}</h4>
+                  <span className="toggle-icon">
+                    {expandedCategories[category] ? '▼' : '►'}
+                  </span>
+                </div>
+                
+                {expandedCategories[category] && (
+                  <table className="parameter-table">
+                    <thead>
+                      <tr>
+                        <th>Parameter</th>
+                        <th>Value</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {parsedData
+                        .filter(row => row.category === category)
+                        .map((row, index) => {
+                          const dataIndex = parsedData.findIndex(d => 
+                            d.category === category && d.parameter === row.parameter
+                          );
+                          return (
+                            <tr key={index}>
+                              <td>
+                                <div className="parameter-name">{row.parameter}</div>
+                                {PARAMETER_DESCRIPTIONS[row.parameter] && (
+                                  <div className="parameter-description">
+                                    {PARAMETER_DESCRIPTIONS[row.parameter]}
+                                  </div>
+                                )}
+                              </td>
+                              <td>
+                                <input
+                                  type="text"
+                                  value={row.value}
+                                  onChange={(e) => handleValueChange(dataIndex, e.target.value)}
+                                />
+                              </td>
+                            </tr>
+                          );
+                        })}
+                    </tbody>
+                  </table>
+                )}
+              </div>
+            ))}
+          </div>
         </div>
       )}
 

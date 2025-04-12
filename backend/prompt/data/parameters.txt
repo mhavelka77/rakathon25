@@ -1,0 +1,40 @@
+Předchozí onkologické onemocnění;Previous oncological diseases;ANO/NE/údaj není k dispozici
+Výška;Metrics of pacients height ;číslo [cm]
+Hmotnost;Metric of pacients first measured weight;číslo [kg]
+BMI;Metrics of pacients body mass index if you don t find it try to calculate from found výška and hmotnost parametrs;číslo
+Pohlaví;Pacients sex;Muž/Žena/nespecifikováno
+Léková alergie          ;Pacients allergies for medications ;ANO/NE/údaj není k dispozici
+Specifikace;Specification of pacients allergies for medications ;text
+Alergie na jód/kontrastní látky  ;Pacients allergy to iodine or contrast substances;ANO/NE/údaj není k dispozici
+Specifikace;Specification of pacients allergy to iodine or contrast substances;text
+Performance status (ECOG);"Measurement of pacients first performance status based on this dial: 0 - Plně aktivní, je schopen normální tělesné aktivity bez omezení; 1 - Omezení fyzických náročných aktivit, ambulantní, schopen lehčí práce, např. domácí práce, kancelářská práce; 2 - Ambulantní, soběstačný, ale neschopen jakékoliv práce. Tráví více než 50% denní doby mimo lůžko; 3 - Omezeně soběstačný. Přes den tráví na lůžku více než 50% denní doby; 4 - Zcela nesoběstačný. Trvale upoután na lůžko nebo do křesla, 5 - Mrtvý";"Výběr z číselníku (0 - Plně aktivní, je schopen normální tělesné aktivity bez omezení; 1 - Omezení fyzických náročných aktivit, ambulantní, schopen lehčí práce, např. domácí práce, kancelářská práce; 2 - Ambulantní, soběstačný, ale neschopen jakékoliv práce. Tráví více než 50% denní doby mimo lůžko; 3 - Omezeně soběstačný. Přes den tráví na lůžku více než 50% denní doby; 4 - Zcela nesoběstačný. Trvale upoután na lůžko nebo do křesla, 5 - Mrtvý)"
+Datum stanovení definitivní diagnózy;Date of definitive diagnosis of the current tumor ;datum
+Diagnóza - kód MKN;The diagnosis of a tumor based on the MKN dial ;výběr {číselník MKN}
+Lateralita;Specification on which side of the body or a paired organ a tumor is located.;výběr {vpravo, vlevo, oboustranně, odpadá, neznámo}
+Grading (diferenciace nádoru) G;The differentiation of the tumor based on the MKN-O code for grading;kód MKN-O pro grading
+ORPHA kód;Specification of the differentiation of the tumor based on the ORPHA dial;dle číselníku Orphanet
+cT;Defining code of the stage of tumor based on Klinická TNM klasifikace for the cT variable (based on this scale: X, 0, is, 1, 2, 3, 4 );výběr {dle číselníku pro danou topografii, rámcově X, 0, is, 1, 2, 3, 4}
+četnost;Frequency of current tumor showing based on the scale of Klinická TNM klasifikace (based on this scale: 1,2,3,m);výběr {1,2,3,m}
+cN;Defining code of the stage of tumor based on Klinická TNM klasifikace for the cN variable (based on this scale: X, 0, 1, 2, 3 );výběr {dle číselníku pro danou topografii, rámcově X, 0, 1, 2, 3}
+cM;Defining code of the stage of tumor based on Klinická TNM klasifikace for the cM variable (based on this scale: X, 0, 1, );výběr {{dle číselníku pro danou topografii, rámcově X, 0, 1}
+y;Classification after primary multimodal treatment based on Patologická TNM klasifikace for the y variable (based on this scale: 0/1);kód podle TNM [0 / 1]
+r;Classification of recurrent tumour based on Patologická TNM klasifikace for the y variable (based on this scale: 0/1);kód podle TNM [0 / 1]
+a;Classification first determined at autopsy based on Patologická TNM klasifikace for the y variable (based on this scale: 0/1);kód podle TNM [0 / 1]
+pT;Defining code of the stage of tumor based on Patologická TNM klasifikace for the pT variable (based on this scale: X, 0, is, 1, 2, 3, 4 );výběr {dle číselníku pro danou topografii, rámcově X, 0, is, 1, 2, 3, 4}
+pN;Defining code of the stage of tumor based on Patologická TNM klasifikace for the pN variable (based on this scale: X, 0, 1, 2, 3 );výběr {dle číselníku pro danou topografii, rámcově X, 0, 1, 2, 3, }
+pM;Defining code of the stage of tumor based on Patologická TNM klasifikace for the pM variable (based on this scale: X, 0, 1, );výběr {dle číselníku pro danou topografii, rámcově X, 0, 1}
+Stádium;Stage of the tumor based on Patologická TNM klasifikace;výběr z číselníku stádií dle TNM
+Lokalizace metastáz;Localization of the tumor for Patologická TNM clasification based this list: mozek, plíce, játra, viscerální mimo výše uvedené, kost, měkké tkáně, jiné, žádné;"číselník (mozek, plíce, játra, viscerální mimo výše uvedené, kost, měkké tkáně, jiné, žádné); více možností"
+Výběr diagnostické skupiny;Specification of the diagnosis group based on this list:  Nádory CNS,  Nádory hlavy a krku, Nádory respiračního systému a mediastina, Nádory GIT (Karcinom jícnu), Nádory GIT (Karcinom žaludku a gastroezofageální junkce), Nádory GIT (Kolorektální karcinom), Nádory GIT (Anální karcinom), Nádory GIT (Karcinom pankreatu), Nádory GIT (Karcinom jater), Nádory GIT (Karcinom žlučníku a žluč.cest), Karcinom prsu, Gynekologické nádory (čípek a hrdlo děložní), Gynekologické nádory (tělo děložní), Gynekologické nádory (ovaria), Gynekologické nádory (zevní rodidla), Renální karcinom, Karcinom močového měchýře a moč.cest, Karcinom prostaty, Germinální nádory pohlavních orgánů, Nongerminální nádory pohlavních orgánů, Epidermální nádory kůže, Maligní melanom, Nádory kostí a sarkomy měkkých tkání, Nádory endokrinních žláz;číselník {Nádory CNS,  Nádory hlavy a krku, Nádory respiračního systému a mediastina, Nádory GIT (Karcinom jícnu), Nádory GIT (Karcinom žaludku a gastroezofageální junkce), Nádory GIT (Kolorektální karcinom), Nádory GIT (Anální karcinom), Nádory GIT (Karcinom pankreatu), Nádory GIT (Karcinom jater), Nádory GIT (Karcinom žlučníku a žluč.cest), Karcinom prsu, Gynekologické nádory (čípek a hrdlo děložní), Gynekologické nádory (tělo děložní), Gynekologické nádory (ovaria), Gynekologické nádory (zevní rodidla), Renální karcinom, Karcinom močového měchýře a moč.cest, Karcinom prostaty, Germinální nádory pohlavních orgánů, Nongerminální nádory pohlavních orgánů, Epidermální nádory kůže, Maligní melanom, Nádory kostí a sarkomy měkkých tkání, Nádory endokrinních žláz}
+Datum zahájení léčby;Date of the pacients start of the oncological treatment if there was a treatment ;datum
+Datum operace;Date of pacients surgical tumor operation if there was a operation;datum
+Datum zahájení   ;Date of beggining of pacients chemotherapy if there was a chemotherapy (not other types of therapy - Chemotherapy uses drugs to treat cancer throughout the whole body, while radiotherapy uses targeted radiation to treat cancer in a specific area.) ;datum
+Datum ukončení ;Date of end of pacients chemotherapy if there was a start of chemotherapy and there was a chemotherapy ;datum
+Datum zahájení  série;Start date of radiotherapy series if there was a radiotherapy ;datum
+Datum ukončení série;End date of radiotherapy series if there was a start of radiotherapy and there was a radiotherapy;datum
+Zevní radioterapie;Defining if external radiotherapy was done;ANO/NE/Údaj není k dispozici
+Typ zevní RT:;Type of external radiotherapy if it was done;výběr {fotonová, protonová, elektronová, ortovoltážní}, více možností
+Brachyterapie;Defining if brachytherapy was done;ANO/NE/Údaj není k dispozici
+Datum hodnocení léčebné odpovědi;Date of assessment of treatment response ;datum
+Hodnocená léčebná odpověď;Assessment of treatment response based of the choice from this list: Kompletní remise (CR)/Parciální remise(PR)/Stabilizace(SD)/Progrese(PD)/Nelze hodnotit;výběr {Kompletní remise (CR)/Parciální remise(PR)/Stabilizace(SD)/Progrese(PD)/Nelze hodnotit}                                          
+Progrese;Progress of the tumor based on this list: lokální recidiva / diseminace;výběr {lokální recidiva / diseminace }

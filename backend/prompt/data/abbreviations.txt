@@ -1,0 +1,47 @@
+ABR;acidobazická rovnováha
+ADL;activities of daily living
+AE;antiestrogeny
+AIM;akutní infarkt myokardu
+ATB;antibiotika
+bpn;bez patologického nálezu
+BRT;brachyterapie
+BSC;best supportive care
+CA;karcinom
+CHT;chemoterapie
+CMP;cévní mozková příhoda
+CR;kompletní remise onemocnění
+CT;computed tomography
+dg.;diagnóza
+DM;diabetes mellitus
+EBRT;external beam radiotherapy
+EEG;elektroencefalografie
+EKG;elektrokardiogram
+FISH;fluorescenční in situ hybridizace
+FN;febrilní neutropenie
+HT;hormonální terapie
+IA;inhibitor aromatázy
+i.m.;intramuskulární
+i.v.;intravenózní
+IHC;imunohistochemie
+IGRT;radioterapie s kontrolou obrazem
+KH;klinické hodnocení
+LU;lymfatická uzlina
+MDT;multidisciplinární tým
+MO;morphin
+NÚ;nežádoucí účinky
+OA;osobní anamnéza
+PD;progrese onemocnění
+PN;pracovní neschopnost
+PR;parciální remise onemocnění
+RA;rodinná anamnéza
+RCHT;radiochemoterapie
+RECIST;kritéria odpovědi na léčbu
+RME;radikální mastektomie
+RT;radiační terapie
+RTG;rentgen
+SD;stabilizované onemocnění
+SIA;steroidní inhibitory aromatázy
+SLN;sentinelová uzlina
+TM;tumor markery
+TU;tumor
+USG;ultrasonografie

@@ -16,6 +16,7 @@ INSTRUCTIONS:
 1. Carefully analyze the medical text and extract ONLY the parameters listed above.
 2. For each parameter listed above, you must provide a value, even if empty.
 3. For each parameter found, provide the name as in the first column of the parameter and the extracted value in the format specified in the third column.
+4. If the parameters only have two columns, the second is the value format.
 4. Format your response in a structured format as follows:
    PARAMETER_NAME,EXTRACTED_VALUE
    Each parameter on a new line, with the parameter name and value separated by a comma.

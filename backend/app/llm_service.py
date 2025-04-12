@@ -66,8 +66,8 @@ def check_token_limit(prompt: str, model: str) -> bool:
         estimated_tokens = len(prompt) // 4
         return estimated_tokens <= (MAX_CONTEXT_LENGTH * 0.75)
 
-async def get_llm_response(texts: List[str], model: str = DEFAULT_MODEL) -> str:
-    prompt = create_prompt(texts)
+async def get_llm_response(texts: List[str], model: str = DEFAULT_MODEL, analysis_type: str = "standard") -> str:
+    prompt = create_prompt(texts, analysis_type)
     
     if not check_token_limit(prompt, model):
         return "Error: Input text is too large for the model's context window. Please reduce the amount of text or try using fewer documents."
