@@ -4,20 +4,19 @@ import requests
 from dotenv import load_dotenv
 import aiohttp
 import json
+import tiktoken
 
 from app.prompt import create_prompt
 
-# Load environment variables
 load_dotenv()
 
-# Get API keys
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 LOCAL_LLM_URL = os.getenv("LOCAL_LLM_URL")
 
-# Get available models from OpenAI
+MAX_CONTEXT_LENGTH = 128000
+
 def fetch_available_models():
     if not OPENAI_API_KEY:
-        # If no API key, return default models
         return ["gpt-4o-mini"]
     
     try:
@@ -31,53 +30,54 @@ def fetch_available_models():
         if response.status_code == 200:
             all_models = response.json()["data"]
             
-            # Filter to include only chat models we want to support
             supported_prefixes = ["gpt-4", "gpt-3.5"]
             models = [model["id"] for model in all_models 
                      if any(model["id"].startswith(prefix) for prefix in supported_prefixes)]
             
-            # Sort models and ensure we have at least one model
             models.sort()
             if not models:
                 models = ["gpt-4o-mini"]
             
             return models
         else:
-            # Fallback to default model
             return ["gpt-4o-mini"]
     except Exception as e:
         print(f"Error fetching models from OpenAI: {str(e)}")
         return ["gpt-4o-mini"]
 
-# Initialize models
 AVAILABLE_MODELS = fetch_available_models()
 DEFAULT_MODEL = AVAILABLE_MODELS[0] if AVAILABLE_MODELS else "gpt-4o-mini"
 USE_LOCAL_LLM = False if OPENAI_API_KEY else True
 
-async def get_llm_response(texts: List[str], model: str = DEFAULT_MODEL) -> str:
-    """
-    Get a response from an LLM based on the provided texts.
-    Uses OpenAI by default, falls back to local LLM if configured.
-    The LLM will extract parameters defined in parameters.csv from the medical texts.
-    
-    Args:
-        texts: List of text extracted from documents
-        model: The LLM model to use
+def check_token_limit(prompt: str, model: str) -> bool:
+    try:
+        if "gpt-4" in model:
+            encoding = tiktoken.encoding_for_model("gpt-4")
+        elif "gpt-3.5" in model:
+            encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
+        else:
+            encoding = tiktoken.get_encoding("cl100k_base")
+            
+        token_count = len(encoding.encode(prompt))
+        available_tokens = MAX_CONTEXT_LENGTH * 0.75
         
-    Returns:
-        LLM response containing extracted parameters
-    """
-    # Use the consolidated prompt from the prompt module
+        return token_count <= available_tokens
+    except Exception:
+        estimated_tokens = len(prompt) // 4
+        return estimated_tokens <= (MAX_CONTEXT_LENGTH * 0.75)
+
+async def get_llm_response(texts: List[str], model: str = DEFAULT_MODEL) -> str:
     prompt = create_prompt(texts)
     
-    # Use the appropriate LLM
+    if not check_token_limit(prompt, model):
+        return "Error: Input text is too large for the model's context window. Please reduce the amount of text or try using fewer documents."
+    
     if USE_LOCAL_LLM:
         return await get_local_llm_response(prompt, model)
     else:
         return get_openai_response(prompt, model)
 
 def get_openai_response(prompt: str, model: str = DEFAULT_MODEL) -> str:
-    """Get a response from OpenAI API using direct HTTP request."""
     if not OPENAI_API_KEY:
         raise ValueError("OpenAI API key is not set in the environment variables")
     
@@ -107,12 +107,10 @@ def get_openai_response(prompt: str, model: str = DEFAULT_MODEL) -> str:
         return f"Error getting response from OpenAI: {str(e)}"
 
 async def get_local_llm_response(prompt: str, model: str = DEFAULT_MODEL) -> str:
-    """Get a response from a local LLM service."""
     if not LOCAL_LLM_URL:
         raise ValueError("Local LLM URL is not set in the environment variables")
     
     try:
-        # Prepare the request payload
         payload = {
             "model": model,
             "messages": [
@@ -121,7 +119,6 @@ async def get_local_llm_response(prompt: str, model: str = DEFAULT_MODEL) -> str
             ]
         }
         
-        # Make the request to the local LLM service
         async with aiohttp.ClientSession() as session:
             async with session.post(
                 f"{LOCAL_LLM_URL}/chat/completions",
@@ -130,11 +127,10 @@ async def get_local_llm_response(prompt: str, model: str = DEFAULT_MODEL) -> str
             ) as response:
                 result = await response.json()
                 
-                # Parse the response
                 if response.status == 200:
                     return result["choices"][0]["message"]["content"]
                 else:
                     return f"Error from local LLM service: {result.get('error', 'Unknown error')}"
     
     except Exception as e:
-        return f"Error getting response from local LLM: {str(e)}" 
+        return f"Error getting response from local LLM: {str(e)}"

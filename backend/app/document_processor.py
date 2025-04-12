@@ -10,29 +10,17 @@ import io
 import openpyxl
 
 async def process_documents(files: List[UploadFile]) -> List[str]:
-    """
-    Process a list of uploaded documents and extract text from them.
-    Supports PDF, DOCX, JPG/PNG, TXT, and XLSX files.
-    
-    Args:
-        files: List of uploaded files
-        
-    Returns:
-        List of extracted text from each document
-    """
     results = []
     
     for file in files:
         file_content = await file.read()
         file_extension = os.path.splitext(file.filename)[1].lower()
         
-        # Create a temp file to process
         with tempfile.NamedTemporaryFile(delete=False, suffix=file_extension) as temp_file:
             temp_file.write(file_content)
             temp_file_path = temp_file.name
         
         try:
-            # Process based on file type
             if file_extension == '.pdf':
                 text = extract_text_from_pdf(temp_file_path)
             elif file_extension == '.docx':
@@ -49,22 +37,17 @@ async def process_documents(files: List[UploadFile]) -> List[str]:
             results.append(text)
         
         finally:
-            # Clean up the temp file
             if os.path.exists(temp_file_path):
                 os.unlink(temp_file_path)
         
-        # Reset file cursor for potential reuse
         await file.seek(0)
     
     return results
 
 def extract_text_from_pdf(file_path: str) -> str:
-    """Extract text from PDF using OCR (since some PDFs may be scanned documents)."""
     try:
-        # Convert PDF pages to images
         images = convert_from_path(file_path)
         
-        # Extract text from each page
         text_content = []
         for image in images:
             text = pytesseract.image_to_string(image)
@@ -75,7 +58,6 @@ def extract_text_from_pdf(file_path: str) -> str:
         return f"Error extracting text from PDF: {str(e)}"
 
 def extract_text_from_docx(file_path: str) -> str:
-    """Extract text from DOCX document."""
     try:
         doc = docx.Document(file_path)
         return "\n".join([paragraph.text for paragraph in doc.paragraphs])
@@ -83,7 +65,6 @@ def extract_text_from_docx(file_path: str) -> str:
         return f"Error extracting text from DOCX: {str(e)}"
 
 def extract_text_from_image(file_path: str) -> str:
-    """Extract text from image using OCR."""
     try:
         image = Image.open(file_path)
         text = pytesseract.image_to_string(image)
@@ -92,7 +73,6 @@ def extract_text_from_image(file_path: str) -> str:
         return f"Error extracting text from image: {str(e)}"
 
 def extract_text_from_xlsx(file_path: str) -> str:
-    """Extract text from Excel (XLSX) file."""
     try:
         workbook = openpyxl.load_workbook(file_path, data_only=True)
         text_content = []
@@ -102,13 +82,11 @@ def extract_text_from_xlsx(file_path: str) -> str:
             sheet_text = [f"Sheet: {sheet_name}"]
             
             for row in sheet.iter_rows(values_only=True):
-                # Convert all cell values to strings and filter out None values
                 row_text = [str(cell) if cell is not None else "" for cell in row]
-                # Join cells with commas to create CSV-like format
                 sheet_text.append(",".join(row_text))
             
             text_content.append("\n".join(sheet_text))
         
         return "\n\n".join(text_content)
     except Exception as e:
-        return f"Error extracting text from XLSX: {str(e)}" 
+        return f"Error extracting text from XLSX: {str(e)}"
