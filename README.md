@@ -9,12 +9,20 @@ Team Modprobe p53
 
 - prezentace 
 - az bude vetsina hotova tak jupyter notebook s analyzou dat co mame
-- vybrat parametry
 - napsat dokumentaci
-- pridat do promptu ciselniky
+- Lepsi UI?
+- Ukazat modelu priklad
+- Second round of LLM sanity check?
+- ECOG - daat inicialni 
+- lokalni model!
+- reference na puvodni text! 
+- zkusit vsech 300 params. Udelat switch na Frontend na bud pouzit advanced nebo simple view!
+
 
 
 # done
+- vybrat parametry
+- pridat do promptu ciselniky
 - vycistit a zjednodusit kod na konci
 - Z dat co mame extrahovat testovaci set na statistickou analyzu. 
 - pouzivat prompt a vsechny data pro LLM v jednom souboru aby to bylo jednoduse editovatelne
