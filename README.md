@@ -9,23 +9,24 @@ Team Modprobe p53
 
 - prezentace 
 - az bude vetsina hotova tak jupyter notebook s analyzou dat co mame
-- Second round of LLM sanity check?
-- lokalni model!
 - anonymizace!
-- reference na puvodni text!
 - natocit video
-    - natocit doktora a no copyright music
-- personalizace
-- Lepsi UI?
+- deploy .exe?
+
+
 
 # cancelled?
+- lokalni model!
 - napsat dokumentaci
-- deploy .exe?
 - Ukazat modelu priklad
+- Second round of LLM sanity check?
 
 
 
 # done
+- personalizace
+- Lepsi UI?
+- reference na puvodni text!
 - zkusit vsech 300 params. Udelat switch na Frontend na bud pouzit advanced nebo simple view!
 - ECOG - daat inicialni 
 - vybrat parametry

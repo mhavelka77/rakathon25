@@ -121,38 +121,7 @@ TNM patologická klasifikace -Žilní invaze (V);výběr {VX žilní invazi nelz
 TNM patologická klasifikace -Pn - Perineurální invaze;0/1/X
 TNM patologická klasifikace -R - Klasifikace;výběr {RX přítomnost reziduálního nádoru nelze hodnotit, R0 bez reziduálního nádoru, R1 mikroskopický reziduální nádor,R2 makroskopický reziduální nádor}
 TNM patologická klasifikace -Staging - doplňující informace;text
-Výběr diagnostické skupiny-Výběr diagnostické skupiny;"číselník (Nádory CNS a různé intrakraniální a intraspinální nádory, nádory oka
-Nádory CNS
-Nádory oka
-Nádory hlavy a krku
-Nádory respiračního systému a mediastina
-Nádory GIT
-Karcinom jícnu
-Karcinom žaludku a gastroezofageální junkce
-Kolorektální karcinom
-Anální karcinom
-Karcinom pankreatu
-Karcinom jater
-Karcinom žlučníku a žluč.cest
-Karcinom prsu
-Gynekologické nádory
-Nádory močového systému
-Renální karcinom
-Karcinom močového měchýře a moč.cest
-Nádory mužských pohlavních orgánů
-Karcinom prostaty
-Karcinom varlat, penisu
-Nádory mužských pohlavních orgánů
-Karcinom prostaty
-Karcinom varlat, penisu
-Nádory kůže
-Epidermální nádory kůže
-Maligní melanom
-Nádory kostí a sarkomy měkkých tkání
-Nádory endokrinních žláz
-Leukemie, myeloproliferativní onemocnění a myelodysplastická onemocnění
-Lymfomy a retikuloendoteliální nádory
-Nezařazené)"
+Výběr diagnostické skupiny-Výběr diagnostické skupiny;"číselník (Nádory CNS a různé intrakraniální a intraspinální nádory, nádory oka ,Nádory CNS ,Nádory oka ,Nádory hlavy a krku ,Nádory respiračního systému a mediastina ,Nádory GIT ,Karcinom jícnu ,Karcinom žaludku a gastroezofageální junkce ,Kolorektální karcinom ,Anální karcinom ,Karcinom pankreatu ,Karcinom jater ,Karcinom žlučníku a žluč.cest ,Karcinom prsu ,Gynekologické nádory ,Nádory močového systému ,Renální karcinom ,Karcinom močového měchýře a moč.cest ,Nádory mužských pohlavních orgánů ,Karcinom prostaty ,Karcinom varlat, penisu ,Nádory mužských pohlavních orgánů ,Karcinom prostaty ,Karcinom varlat, penisu ,Nádory kůže ,Epidermální nádory kůže ,Maligní melanom ,Nádory kostí a sarkomy měkkých tkání ,Nádory endokrinních žláz ,Leukemie, myeloproliferativní onemocnění a myelodysplastická onemocnění ,Lymfomy a retikuloendoteliální nádory ,Nezařazené)"
 Stav nemoci Přešetření-Trvá léčebná odpověď;ano/ne
 Stav nemoci Přešetření-Datum relapsu/progrese;datum
 Stav nemoci Přešetření-Typ relapsu;výběr {lokální recidiva / diseminace }

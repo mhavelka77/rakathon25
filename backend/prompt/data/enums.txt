@@ -1,1 +1,89 @@
-empty so far.
+C00,Zhoubný novotvar rtu
+C01,Zhoubný novotvar kořene jazyka
+C02,Zhoubný novotvar jiných a neurčených částí jazyka
+C03,Zhoubný novotvar dásně
+C04,Zhoubný novotvar dna úst
+C05,Zhoubný novotvar patra
+C06,Zhoubný novotvar jiných a neurčených částí úst
+C07,Zhoubný novotvar příušní žlázy
+C08,Zhoubný novotvar jiných a neurčených velkých slinných žláz
+C09,Zhoubný novotvar mandle
+C10,Zhoubný novotvar orofaryngu
+C11,Zhoubný novotvar nosohltanu
+C12,Zhoubný novotvar hruškovitého recesu
+C13,Zhoubný novotvar hypofaryngu
+C14,Zhoubný novotvar jiných a neurčených oblastí rtu, ústní dutiny a hltanu
+C15,Zhoubný novotvar jícnu
+C16,Zhoubný novotvar žaludku
+C17,Zhoubný novotvar tenkého střeva
+C18,Zhoubný novotvar tlustého střeva
+C19,Zhoubný novotvar rekto-sigmoidního přechodu
+C20,Zhoubný novotvar konečníku
+C21,Zhoubný novotvar anu a análního kanálu
+C22,Zhoubný novotvar jater a intrahepatálních žlučových cest
+C23,Zhoubný novotvar žlučníku
+C24,Zhoubný novotvar jiných a neurčených částí žlučových cest
+C25,Zhoubný novotvar slinivky břišní
+C26,Zhoubný novotvar jiných a neurčených trávicích orgánů
+C30,Zhoubný novotvar nosní dutiny a středního ucha
+C31,Zhoubný novotvar vedlejších nosních dutin
+C32,Zhoubný novotvar hrtanu
+C33,Zhoubný novotvar průdušnice
+C34,Zhoubný novotvar průdušek a plic
+C37,Zhoubný novotvar brzlíku
+C38,Zhoubný novotvar srdce, mediastina a pohrudnice
+C39,Zhoubný novotvar jiných a neurčených oblastí dýchacího systému a nitrohrudních orgánů
+C40,Zhoubný novotvar kostí a kloubní chrupavky končetin
+C41,Zhoubný novotvar kostí a kloubní chrupavky jiných a neurčených lokalizací
+C43,Zhoubné melanom kůže
+C44,Jiné zhoubné novotvary kůže
+C45,Mezoteliom
+C46,Kaposiho sarkom
+C47,Zhoubný novotvar periferních nervů a autonomního nervového systému
+C48,Zhoubný novotvar retroperitonea a peritonea
+C49,Zhoubný novotvar jiných pojivových a měkkých tkání
+C50,Zhoubný novotvar prsu
+C51,Zhoubný novotvar vulvy
+C52,Zhoubný novotvar vaginy
+C53,Zhoubný novotvar děložního čípku
+C54,Zhoubný novotvar těla dělohy
+C55,Zhoubný novotvar dělohy, neurčená část
+C56,Zhoubný novotvar vaječníku
+C57,Zhoubný novotvar jiných a neurčených ženských pohlavních orgánů
+C58,Zhoubný novotvar placenty
+C60,Zhoubný novotvar penisu
+C61,Zhoubný novotvar prostaty
+C62,Zhoubný novotvar varlete
+C63,Zhoubný novotvar jiných a neurčených mužských pohlavních orgánů
+C64,Zhoubný novotvar ledviny, kromě ledvinné pánvičky
+C65,Zhoubný novotvar ledvinné pánvičky
+C66,Zhoubný novotvar močovodu
+C67,Zhoubný novotvar močového měchýře
+C68,Zhoubný novotvar jiných a neurčených močových orgánů
+C69,Zhoubný novotvar oka a jeho adnex
+C70,Zhoubný novotvar mozkových plen
+C71,Zhoubný novotvar mozku
+C72,Zhoubný novotvar míchy, hlavových nervů a jiných částí centrálního nervového systému
+C73,Zhoubný novotvar štítné žlázy
+C74,Zhoubný novotvar nadledviny
+C75,Zhoubný novotvar jiných endokrinních žláz a příbuzných struktur
+C76,Zhoubný novotvar jiných a neurčených lokalizací
+C77,Sekundární a neurčený zhoubný novotvar lymfatických uzlin
+C78,Sekundární zhoubný novotvar dýchacích a trávicích orgánů
+C79,Sekundární zhoubný novotvar jiných a neurčených lokalizací
+C80,Zhoubný novotvar bez určení lokalizace
+C81,Hodgkinův lymfom
+C82,Folikulární lymfom
+C83,Nefolikulární lymfom
+C84,Zralé T/NK-buněčné lymfomy
+C85,Jiné a neurčené typy ne-Hodgkinova lymfomu
+C86,Jiné specifikované typy T/NK-buněčného lymfomu
+C88,Zhoubné imunoproliferativní nemoci
+C90,Plazmocytom a zhoubné novotvary plazmatických buněk
+C91,Lymfoidní leukémie
+C92,Myeloidní leukémie
+C93,Monocytární leukémie
+C94,Jiné leukémie specifikovaného buněčného typu
+C95,Leukémie neurčeného buněčného typu
+C96,Jiné a neurčené zhoubné novotvary lymfoidní, hematopoetické a příbuzné tkáně
+C97,Zhoubné novotvary vícečetných lokalizací

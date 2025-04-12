@@ -144,7 +144,9 @@ function App() {
       if (analysisType === 'standard') {
         // Parse the CSV-like response into an array of parameter value pairs with line references
         const lines = result.data.response.trim().split('\n');
-        const parsedLines = lines.map(line => {
+        const parsedLines = lines
+          .filter(line => !line.trim().startsWith('```')) // Skip markdown code block markers
+          .map(line => {
           // Handle possible quotes in the CSV values
           const processedLine = line.trim();
           const parts = [];
@@ -201,7 +203,9 @@ function App() {
         // Parse the extended format with categories and line references
         const lines = result.data.response.trim().split('\n');
         
-        const parsedLines = lines.map(line => {
+        const parsedLines = lines
+          .filter(line => !line.trim().startsWith('```')) // Skip markdown code block markers
+          .map(line => {
           // Handle possible quotes in the CSV values
           const processedLine = line.trim();
           const parts = [];
@@ -337,11 +341,11 @@ function App() {
     let csvContent = "";
     
     if (analysisType === 'standard') {
-      csvContent = "Parameter,Value,LineReference\n" + 
-        parsedData.map(row => `"${row.parameter}","${row.value}","${row.lineRef}"`).join('\n');
+      csvContent = "Parameter,Value\n" + 
+        parsedData.map(row => `"${row.parameter}","${row.value}"`).join('\n');
     } else {
-      csvContent = "Category,Parameter,Value,LineReference\n" + 
-        parsedData.map(row => `"${row.category}","${row.parameter}","${row.value}","${row.lineRef}"`).join('\n');
+      csvContent = "Category,Parameter,Value\n" + 
+        parsedData.map(row => `"${row.category}","${row.parameter}","${row.value}"`).join('\n');
     }
     
     // Create a blob and download link
@@ -411,7 +415,10 @@ function App() {
 
   return (
     <div className="container">
-      <h1>Medical Parameter Extractor</h1>
+      <div className="header-container">
+        <h1>Medical Parameter Extractor</h1>
+        <img src="/logo.png" alt="Application Logo" className="app-logo" />
+      </div>
       
       <div className="card">
         <div className="card-body">
