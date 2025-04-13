@@ -1,5 +1,5 @@
-# Single stage build for simplicity
-FROM node:18-alpine
+# Build stage
+FROM node:18-alpine AS build
 
 WORKDIR /app
 
@@ -13,11 +13,21 @@ COPY . .
 # Build the application with production optimization
 RUN npm run build
 
-# Install a simple static file server
-RUN npm install -g serve
+# Production stage - using lightweight nginx to serve static files
+FROM nginx:alpine
+
+# Copy built files from build stage to nginx serve directory
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Add custom nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Set proper permissions for nginx
+RUN chown -R nginx:nginx /usr/share/nginx/html && \
+    chmod -R 755 /usr/share/nginx/html
 
 # Expose port
-EXPOSE 3000
+EXPOSE 80
 
-# Start the server (using serve instead of nginx)
-CMD ["serve", "-s", "build", "-l", "3000"] 
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"] 
