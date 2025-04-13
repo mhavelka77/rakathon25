@@ -54,7 +54,7 @@ docker compose up
 ```
 
 
-> **_NOTE:_** poprvé bude tento příkaz stahovat docker image, může proto trvat až .
+> **_NOTE:_** poprvé bude tento příkaz stahovat docker image, může proto trvat až 10 min.
 
 Aplikace bude dostupná v prohlížeči na adrese http://localhost:3000
 
