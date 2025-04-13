@@ -24,13 +24,37 @@ OnkoMiner je nástroj pro extrakci medicínských parametrů z lékařských dok
 - Exportuje výsledky v CSV formátu
 - Uživatelsky přívětivé rozhraní
 
-## Instalace
+## Instalace (Windows/MacOS/Linux)
+#### *Střední technická náročnost.*
 
-Stáhněte .exe v release. 
+1. Stáhněte a nainstalujte Docker zde: 
 
 ```
-docker-compose up -d
+https://www.docker.com
 ```
+
+2. Stáhněte si naši aplikaci:
+
+```
+git clone https://github.com/mhavelka77/rakathon25.git 
+```
+
+
+3. Nastavte Váš OpenAI API klíč.
+*Více info zde: https://platform.openai.com/*
+
+```
+echo "OPENAI_API_KEY=[KLIC_ZDE]" > backend/.env 
+```
+
+4. Spusťte aplikaci:
+
+```
+docker compose up
+```
+
+
+> **_NOTE:_** poprvé bude tento příkaz stahovat docker image, může proto trvat až .
 
 Aplikace bude dostupná v prohlížeči na adrese http://localhost:3000
 
