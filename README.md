@@ -6,6 +6,8 @@ Team Modprobe p53
 
 ## O projektu
 
+![OnkoMiner screenshot](doc/image.png)
+
 OnkoMiner je nástroj pro extrakci medicínských parametrů z lékařských dokumentů. Aplikace analyzuje texty (převážně v češtině) a automaticky identifikuje důležité onkologické parametry za pomoci umělé inteligence.
 
 ## Funkce
@@ -17,7 +19,7 @@ OnkoMiner je nástroj pro extrakci medicínských parametrů z lékařských dok
 
 ## Instalace
 
-Stáhněte .exe zde.
+Stáhněte .exe v release. 
 
 ```
 docker-compose up -d
