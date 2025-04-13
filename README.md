@@ -13,7 +13,12 @@ OnkoMiner je nástroj pro extrakci medicínských parametrů z lékařských dok
 ## Funkce
 
 - Podporuje různé formáty souborů (PDF, DOCX, TXT, XLSX)
-- Extrahuje 40 - 300 medicínských parametrů
+- Anonmizace citlivých údajů
+- Použití velkého jazykového modelu (LLM) - lokálně nebo externě dle nastavení
+- Dva módy extrakce:
+  - **Standard** - extrahuje 40 hlavních parametrů
+  - **Extended** - extrahuje 250 parametrů definovaných podle připravovaného standradu **ÚZIS** a **ČOS**
+- Možnost úprav vygenerovaných parametrů
 - Exportuje výsledky v CSV formátu
 - Uživatelsky přívětivé rozhraní
 
