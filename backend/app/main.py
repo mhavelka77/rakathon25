@@ -6,8 +6,15 @@ import os
 from app.document_processor import process_documents
 from app.llm_service import get_llm_response, AVAILABLE_MODELS, DEFAULT_MODEL
 from app.prompt import load_parameters_descriptions
+from app.anonymizer import Anonymizer
 
 app = FastAPI(title="Document Processing API")
+
+anonymizer = Anonymizer()
+NAMES_FILE_PATH = os.environ.get("NAMES_FILE_PATH", "app/names_to_anonymize.txt")
+
+if os.path.exists(NAMES_FILE_PATH):
+    anonymizer.load_names_from_file(NAMES_FILE_PATH)
 
 app.add_middleware(
     CORSMiddleware,
@@ -63,19 +70,40 @@ async def process_data(
         if model not in AVAILABLE_MODELS:
             model = DEFAULT_MODEL
         
-        combined_text = "\n\n".join(document_texts)
+        anonymized_texts = anonymizer.anonymize_texts(document_texts)
+        anonymized_combined_text = "\n\n".join(anonymized_texts)
         
-        llm_response = await get_llm_response(document_texts, model, analysis_type)
+        llm_response = await get_llm_response(anonymized_texts, model, analysis_type)
         
         return {
             "success": True,
             "response": llm_response,
             "analysis_type": analysis_type,
-            "combined_text": combined_text
+            "combined_text": anonymized_combined_text,
         }
     
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/test-anonymizer")
+async def test_anonymizer():
+    """Test endpoint to verify anonymizer is working correctly."""
+    test_text = """
+    Here are some test names to anonymize:
+    - Novák and novak and NOVÁK
+    - Petr Bartoš and Jan bartos
+    - Adamírová and ADAMIROVA
+    - Václav ČIPČALA works at the company
+    - Patient Brablíková was treated for...
+    """
+    
+    result = anonymizer.anonymize_text(test_text)
+    
+    return {
+        "original": test_text,
+        "anonymized": result,
+        "names_loaded": len(anonymizer.names_to_replace)
+    }
 
 if __name__ == "__main__":
     import uvicorn

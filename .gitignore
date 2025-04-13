@@ -27,5 +27,6 @@ tmp/
 .DS_Store
 
 /data
+/tools/bin
 
 frontend/node_modules/

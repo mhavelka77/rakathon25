@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 import aiohttp
 import json
 import tiktoken
-
 from app.prompt import create_prompt
 
 load_dotenv()
@@ -13,7 +12,7 @@ load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 LOCAL_LLM_URL = os.getenv("LOCAL_LLM_URL")
 MAX_CONTEXT_LENGTH = 128000
-USE_LOCAL_LLM = not OPENAI_API_KEY
+USE_LOCAL_LLM = False if OPENAI_API_KEY else True
 DEFAULT_MODEL = "gpt-4o-mini"
 
 def fetch_available_models():
