@@ -1,6 +1,7 @@
 # OnkoMiner
 
 Tento projekt byl vytvořen v rámci [Rakathonu](https://www.rakathon.cz) v Praze 11.4.-13.4 2025.
+Toto je finální release verze po Hackathonu.
 
 **Team Modprobe p53**
 
