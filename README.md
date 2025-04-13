@@ -2,7 +2,7 @@
 
 Tento projekt byl vytvořen v rámci [Rakathonu](https://www.rakathon.cz) v Praze 11.4.-13.4 2025.
 
-Team Modprobe p53
+**Team Modprobe p53**
 
 ## O projektu
 
@@ -18,6 +18,7 @@ OnkoMiner je nástroj pro extrakci medicínských parametrů z lékařských dok
 - Dva módy extrakce:
   - **Standard** - extrahuje 40 hlavních parametrů
   - **Extended** - extrahuje 250 parametrů definovaných podle připravovaného standradu **ÚZIS** a **ČOS**
+- Rozdělení parametrů dle kategorií
 - Možnost úprav vygenerovaných parametrů
 - Exportuje výsledky v CSV formátu
 - Uživatelsky přívětivé rozhraní
